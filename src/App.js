@@ -11,6 +11,8 @@ import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import { JoiningScreen } from "./components/JoiningScreen";
 import ReactPlayer from "react-player";
+import styled, { ThemeProvider } from "styled-components";
+import Avatar from 'react-avatar';
 
 const primary = "#3E84F6";
 
@@ -196,6 +198,7 @@ const ParticipantView = ({ participantId }) => {
   const onStreamEnabled = (stream) => { };
   const onStreamDisabled = (stream) => { };
 
+  
   const {
     displayName,
     participant,
@@ -267,10 +270,10 @@ const ParticipantView = ({ participantId }) => {
     <div
       style={{
         width,
-        backgroundColor: primary,
-        borderRadius: borderRadius,
+        // backgroundColor: primary,
+        // borderRadius: borderRadius,
         overflow: "hidden",
-        margin: borderRadius,
+        // margin: borderRadius,
         padding: borderRadius,
         display: "flex",
         flex: 1,
@@ -283,7 +286,7 @@ const ParticipantView = ({ participantId }) => {
       <div
         style={{
           position: "relative",
-          borderRadius: borderRadius,
+          // borderRadius: borderRadius,
           overflow: "hidden",
           backgroundColor: "black",
           width: "100%",
@@ -322,19 +325,25 @@ const ParticipantView = ({ participantId }) => {
               right: borderRadius,
             }}
           >
-            <p
+            {/* <p
               style={{
                 color: webcamOn ? "green" : "red",
                 fontSize: 16,
                 fontWeight: "bold",
                 opacity: 1,
               }}
-            >
-              WEB CAM
-            </p>
+            > */}
+              {
+              
+              webcamOn ? <Avatar name={"You"} size="40px" round="30px" style={{marginTop:0}}/> : 
+              <Avatar name={displayName} maxInitials={2} size="40px" round="30px" style={{marginTop:120,marginRight:195}}/>
+              
+              }
+              
+            {/* </p> */}
           </div>
 
-          <div
+          {/* <div
             style={{
               position: "absolute",
               top: 10,
@@ -371,11 +380,11 @@ const ParticipantView = ({ participantId }) => {
             >
               Switch Participant
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
 
-      <div
+      {/* <div
         style={{
           marginTop: borderRadius,
           position: "relative",
@@ -430,16 +439,16 @@ const ParticipantView = ({ participantId }) => {
             </p>
           </div>
         </div>
-      </div>
-      <table>
+      </div> */}
+      {/* <table>
         {[
           { k: "Name", v: displayName },
-          { k: "webcamOn", v: webcamOn ? "YES" : "NO" },
-          { k: "micOn", v: micOn ? "YES" : "NO" },
-          { k: "screenShareOn", v: screenShareOn ? "YES" : "NO" },
-          { k: "isLocal", v: isLocal ? "YES" : "NO" },
-          { k: "isActiveSpeaker", v: isActiveSpeaker ? "YES" : "NO" },
-          { k: "isMainParticipant", v: isMainParticipant ? "YES" : "NO" },
+          // { k: "webcamOn", v: webcamOn ? "YES" : "NO" },
+          // { k: "micOn", v: micOn ? "YES" : "NO" },
+          // { k: "screenShareOn", v: screenShareOn ? "YES" : "NO" },
+          // { k: "isLocal", v: isLocal ? "YES" : "NO" },
+          // { k: "isActiveSpeaker", v: isActiveSpeaker ? "YES" : "NO" },
+          // { k: "isMainParticipant", v: isMainParticipant ? "YES" : "NO" },
         ].map(({ k, v }) => (
           <tr key={k}>
             <td style={{ border: "1px solid #fff", padding: 4 }}>
@@ -450,7 +459,7 @@ const ParticipantView = ({ participantId }) => {
             </td>
           </tr>
         ))}
-      </table>
+      </table> */}
     </div>
   );
 };
@@ -467,7 +476,7 @@ const ParticipantsView = () => {
         padding: borderRadius,
       }}
     >
-      <Title dark title={"Participants"} />
+      {/* <Title dark title={"Participants"} /> */}
       {chunk([...participants.keys()]).map((k) => (
         <div style={{ display: "flex" }}>
           {k.map((l) => (
@@ -888,7 +897,7 @@ function MeetingView({ onNewMeetingIdToken, onMeetingLeave }) {
           Make Connections
         </button>
       </div>
-      <h1>Meeting id is : {meetingId}</h1>
+      {/* <h1>Meeting id is : {meetingId}</h1> */}
       <div style={{ display: "flex", flex: 1 }}>
         <div
           style={{

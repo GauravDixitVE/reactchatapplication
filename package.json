@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
     "@material-ui/styles": "^4.11.5",
     "@testing-library/jest-dom": "^5.16.4",
@@ -10,11 +11,13 @@
     "@testing-library/user-event": "^13.5.0",
     "@videosdk.live/react-sdk": "^0.1.42",
     "react": "^18.2.0",
+    "react-avatar": "^5.0.1",
     "react-confirm-alert": "^3.0.6",
     "react-dom": "^18.2.0",
     "react-facebook-login": "^4.1.1",
     "react-player": "^2.10.1",
     "react-scripts": "5.0.1",
+    "styled-components": "^5.3.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
