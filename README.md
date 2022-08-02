@@ -1,70 +1,62 @@
-# Getting Started with Create React App
+# Video SDK for React JS
+[![Discord](https://img.shields.io/discord/876774498798551130?label=Join%20on%20Discord)](https://discord.gg/kgAvyxtTxv)
+[![Register](https://img.shields.io/badge/Contact-Know%20More-blue)](https://app.videosdk.live/signup)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+At Video SDK, we’re building tools to help companies create world-class collaborative products with capabilities of live audio/videos, compose cloud recordings/rtmp/hls and interaction APIs
 
-## Available Scripts
+## Demo App
+Check out demo [here](https://videosdk.live/prebuilt/)
 
-In the project directory, you can run:
+## Steps to Integrate
 
-### `npm start`
+### Prerequisites
+- React Js 16 or later
+- Node 10 or later
+- Valid [Video SDK Account](https://app.videosdk.live/signup)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Step 1: Clone the sample project
+Clone the repository to your local environment.
+```js
+git clone https://github.com/videosdk-live/videosdk-rtc-react-native-sdk-example.git
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Step 2: Copy the .env.example file to .env file.
+Open your favorite code editor and copy `.env.example` to `.env` file.
+```js 
+cp .env.example .env
+```
 
-### `npm test`
+### Step 3: Modify .env file
+Generate temporary token from [Video SDK Account](https://app.videosdk.live/signup).
+```js title=".env"
+REACT_APP_VIDEOSDK_TOKEN = "TEMPORARY-TOKEN"
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Step 4: Install the dependecies
+Install dependecies all the project dependencies.
+```js
+npm install
+```
 
-### `npm run build`
+### Step 5: Run the Sample App
+Bingo, it's time to push the launch button. 
+```js
+npm run start
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Examples
+- [Prebuilt SDK Examples](https://github.com/videosdk-live/videosdk-rtc-prebuilt-examples)
+- [JavaScript SDK Example](https://github.com/videosdk-live/videosdk-rtc-javascript-sdk-example)
+- [React JS SDK Example](https://github.com/videosdk-live/videosdk-rtc-react-sdk-example)
+- [React Native SDK Example](https://github.com/videosdk-live/videosdk-rtc-react-native-sdk-example)
+- [Flutter SDK Example](https://github.com/videosdk-live/videosdk-rtc-flutter-sdk-example)
+- [Android SDK Example](https://github.com/videosdk-live/videosdk-rtc-android-java-sdk-example)
+- [iOS SDK Example](https://github.com/videosdk-live/videosdk-rtc-ios-sdk-example)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Documentation
+[Read the documentation](https://docs.videosdk.live/) to start using Video SDK.
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Community
+- [Discord](https://discord.gg/Gpmj6eCq5u) - To get involved with the Video SDK community, ask questions and share tips.
+- [Twitter](https://twitter.com/video_sdk) - To receive updates, announcements, blog posts, and general Video SDK tips.
