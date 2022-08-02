@@ -272,7 +272,7 @@ const ParticipantView = ({ participantId }) => {
         width,
         // backgroundColor: primary,
         // borderRadius: borderRadius,
-        overflow: "hidden",
+        // overflow: "hidden",
         // margin: borderRadius,
         padding: borderRadius,
         display: "flex",
@@ -287,7 +287,7 @@ const ParticipantView = ({ participantId }) => {
         style={{
           position: "relative",
           // borderRadius: borderRadius,
-          overflow: "hidden",
+          // overflow: "hidden",
           backgroundColor: "black",
           width: "100%",
           height: 300,
@@ -905,7 +905,7 @@ function MeetingView({ onNewMeetingIdToken, onMeetingLeave }) {
             flexDirection: "column",
             position: "relative",
             flex: 1,
-            overflowY: "scroll",
+            // overflowY: "scroll",
             height: `calc(100vh - ${tollbarHeight}px)`,
           }}
         >
