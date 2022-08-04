@@ -1,0 +1,9 @@
+.main{
+    margin-left: 'border-radius';
+    width: '400';
+    background-color: '#3E84F6';
+    overflow-y: "scroll";
+    /* borderRadius; */
+    height: calc(100vh - 976px);
+    padding: 8;
+}

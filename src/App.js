@@ -4,13 +4,14 @@ import {
   useMeeting,
   useParticipant,
   useConnection,
-  usePubSub,
+  // usePubSub,
 } from "@videosdk.live/react-sdk";
 import { getToken } from "./api/api";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import { JoiningScreen } from "./components/JoiningScreen";
 import ReactPlayer from "react-player";
+import MeetingChat from "./components/MeetingChat/MeetingChat";
 
 const primary = "#3E84F6";
 
@@ -23,17 +24,6 @@ const chunk = (arr) => {
   while (arr.length) newArr.push(arr.splice(0, 3));
   return newArr;
 };
-
-function formatAMPM(date) {
-  var hours = date.getHours();
-  var minutes = date.getMinutes();
-  var ampm = hours >= 12 ? "pm" : "am";
-  hours = hours % 12;
-  hours = hours ? hours : 12; // the hour '0' should be '12'
-  minutes = minutes < 10 ? "0" + minutes : minutes;
-  var strTime = hours + ":" + minutes + " " + ampm;
-  return strTime;
-}
 
 const Title = ({ title, dark }) => {
   return <h2 style={{ color: dark ? primary : "#fff" }}>{title}</h2>;
@@ -105,88 +95,51 @@ const ExternalVideo = () => {
   );
 };
 
-const MessageList = ({ messages }) => {
-  return (
-    <div>
-      {messages?.map((message, i) => {
-        const { senderName, message: text, timestamp } = message;
 
-        return (
-          <div
-            style={{
-              margin: 8,
-              backgroundColor: "darkblue",
-              borderRadius: 8,
-              overflow: "hidden",
-              padding: 8,
-              color: "#fff",
-            }}
-            key={i}
-          >
-            <p style={{ margin: 0, padding: 0, fontStyle: "italic" }}>
-              {senderName}
-            </p>
-            <h3 style={{ margin: 0, padding: 0, marginTop: 4 }}>{text}</h3>
-            <p
-              style={{
-                margin: 0,
-                padding: 0,
-                opacity: 0.6,
-                marginTop: 4,
-              }}
-            >
-              {formatAMPM(new Date(timestamp))}
-            </p>
-          </div>
-        );
-      })}
-    </div>
-  );
-};
 
-const MeetingChat = ({ tollbarHeight }) => {
-  const { publish, messages } = usePubSub("CHAT", {});
-  const [message, setMessage] = useState("");
-  return (
-    <div
-      style={{
-        marginLeft: borderRadius,
-        width: 400,
-        backgroundColor: primary,
-        overflowY: "scroll",
-        borderRadius,
-        height: `calc(100vh - ${tollbarHeight + 2 * borderRadius}px)`,
-        padding: borderRadius,
-      }}
-    >
-      <Title title={"Chat"} />
+// const MeetingChat = ({ tollbarHeight }) => {
+//   const { publish, messages } = usePubSub("CHAT", {});
+//   const [message, setMessage] = useState("");
+//   return (
+//     <div
+//       style={{
+//         marginLeft: borderRadius,
+//         width: 400,
+//         backgroundColor: primary,
+//         overflowY: "scroll",
+//         borderRadius,
+//         height: `calc(100vh - ${tollbarHeight + 2 * borderRadius}px)`,
+//         padding: borderRadius,
+//       }}
+//     >
+//       <Title title={"Chat"} />
 
-      <div style={{ display: "flex" }}>
-        <input
-          value={message}
-          onChange={(e) => {
-            const v = e.target.value;
-            setMessage(v);
-          }}
-        />
-        <button
-          className={"button default"}
-          onClick={() => {
-            const m = message;
+//       <div style={{ display: "flex" }}>
+//         <input
+//           value={message}
+//           onChange={(e) => {
+//             const v = e.target.value;
+//             setMessage(v);
+//           }}
+//         />
+//         <button
+//           className={"button default"}
+//           onClick={() => {
+//             const m = message;
 
-            if (m.length) {
-              publish(m, { persist: true });
-              setMessage("");
-            }
-          }}
-        >
-          Send
-        </button>
-      </div>
-      <MessageList messages={messages} />
-    </div>
-  );
-};
+//             if (m.length) {
+//               publish(m, { persist: true });
+//               setMessage("");
+//             }
+//           }}
+//         >
+//           Send
+//         </button>
+//       </div>
+//       <MessageList messages={messages} />
+//     </div>
+//   );
+// };
 
 const ParticipantView = ({ participantId }) => {
   const webcamRef = useRef(null);
