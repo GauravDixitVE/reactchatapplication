@@ -6,7 +6,7 @@ import {
   useConnection,
   usePubSub,
 } from "@videosdk.live/react-sdk";
-import { getToken } from "./api";
+import { getToken } from "./API";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import { JoiningScreen } from "./components/JoiningScreen";
@@ -818,8 +818,8 @@ function MeetingView({ onNewMeetingIdToken, onMeetingLeave }) {
           <img src="https://static.zujonow.com/videosdk.live/videosdk_logo_circle_big.png" alt="logo" className="logo"/>
         </div>
         <div className="jss107 controls">
-        <div class="jss123 jss103">
-          <div class="jss149 jss103">
+        <div className="jss123 jss103">
+          <div className="jss149 jss103">
             <div className="ml-24 featured-btn">
               <button className={"button btn-featured-transparent"} onClick={toggleMic}>
                 <Mic/>
@@ -851,7 +851,7 @@ function MeetingView({ onNewMeetingIdToken, onMeetingLeave }) {
               </button>
             </div>
           </div>
-          <div class="leave-btn">
+          <div className="leave-btn">
             <button className={"button red"} onClick={leave}>
               LEAVE
             </button>

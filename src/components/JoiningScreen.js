@@ -22,7 +22,7 @@ import {
 import useResponsiveSize from "../utils/useResponsiveSize";
 import { red } from "@material-ui/core/colors";
 import { MeetingDetailsScreen } from "./MeetingDetailsScreen";
-import { createMeeting, getToken, validateMeeting } from "../api";
+import { createMeeting, getToken, validateMeeting } from "../API";
 
 const useStyles = makeStyles((theme) => ({
   video: {
