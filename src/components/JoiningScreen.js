@@ -21,9 +21,9 @@ import {
 } from "@material-ui/icons";
 import useResponsiveSize from "../utils/useResponsiveSize";
 import { red } from "@material-ui/core/colors";
-import { MeetingDetailsScreen } from "./MeetingScreen";
-import { createMeeting, getToken, validateMeeting } from "../api/api";
-  
+import { MeetingDetailsScreen } from "./MeetingDetailsScreen";
+import { createMeeting, getToken, validateMeeting } from "../API";
+
 const useStyles = makeStyles((theme) => ({
   video: {
     borderRadius: "10px",
@@ -50,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
   
+
 export function JoiningScreen({
   participantName,
   setParticipantName,
@@ -327,4 +328,3 @@ export function JoiningScreen({
     </Box>
   );
 }
-  

@@ -4,17 +4,16 @@ import {
   useMeeting,
   useParticipant,
   useConnection,
-  // usePubSub,
+  usePubSub,
 } from "@videosdk.live/react-sdk";
-import { getToken } from "./api/api";
+import { getToken } from "./API";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import { JoiningScreen } from "./components/JoiningScreen";
 import ReactPlayer from "react-player";
-import MeetingChat from "./components/MeetingChat/MeetingChat";
+import {Mic,Videocam,ScreenShare,PlayCircleFilledWhite,Stop,PauseCircleOutline,RecordVoiceOver,VoiceOverOff} from '@material-ui/icons';
 
 const primary = "#3E84F6";
-// const primary = "#212032";
 
 const width = 400;
 const height = (width * 2) / 3;
@@ -25,6 +24,17 @@ const chunk = (arr) => {
   while (arr.length) newArr.push(arr.splice(0, 3));
   return newArr;
 };
+
+function formatAMPM(date) {
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var ampm = hours >= 12 ? "pm" : "am";
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+  var strTime = hours + ":" + minutes + " " + ampm;
+  return strTime;
+}
 
 const Title = ({ title, dark }) => {
   return <h2 style={{ color: dark ? primary : "#fff" }}>{title}</h2>;
@@ -96,51 +106,88 @@ const ExternalVideo = () => {
   );
 };
 
+const MessageList = ({ messages }) => {
+  return (
+    <div>
+      {messages?.map((message, i) => {
+        const { senderName, message: text, timestamp } = message;
 
+        return (
+          <div
+            style={{
+              margin: 8,
+              backgroundColor: "darkblue",
+              borderRadius: 8,
+              overflow: "hidden",
+              padding: 8,
+              color: "#fff",
+            }}
+            key={i}
+          >
+            <p style={{ margin: 0, padding: 0, fontStyle: "italic" }}>
+              {senderName}
+            </p>
+            <h3 style={{ margin: 0, padding: 0, marginTop: 4 }}>{text}</h3>
+            <p
+              style={{
+                margin: 0,
+                padding: 0,
+                opacity: 0.6,
+                marginTop: 4,
+              }}
+            >
+              {formatAMPM(new Date(timestamp))}
+            </p>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
 
-// const MeetingChat = ({ tollbarHeight }) => {
-//   const { publish, messages } = usePubSub("CHAT", {});
-//   const [message, setMessage] = useState("");
-//   return (
-//     <div
-//       style={{
-//         marginLeft: borderRadius,
-//         width: 400,
-//         backgroundColor: primary,
-//         overflowY: "scroll",
-//         borderRadius,
-//         height: `calc(100vh - ${tollbarHeight + 2 * borderRadius}px)`,
-//         padding: borderRadius,
-//       }}
-//     >
-//       <Title title={"Chat"} />
+const MeetingChat = ({ tollbarHeight }) => {
+  const { publish, messages } = usePubSub("CHAT", {});
+  const [message, setMessage] = useState("");
+  return (
+    <div
+      style={{
+        marginLeft: borderRadius,
+        width: 400,
+        backgroundColor: primary,
+        overflowY: "scroll",
+        borderRadius,
+        height: `calc(100vh - ${tollbarHeight + 2 * borderRadius}px)`,
+        padding: borderRadius,
+      }}
+    >
+      <Title title={"Chat"} />
 
-//       <div style={{ display: "flex" }}>
-//         <input
-//           value={message}
-//           onChange={(e) => {
-//             const v = e.target.value;
-//             setMessage(v);
-//           }}
-//         />
-//         <button
-//           className={"button default"}
-//           onClick={() => {
-//             const m = message;
+      <div style={{ display: "flex" }}>
+        <input
+          value={message}
+          onChange={(e) => {
+            const v = e.target.value;
+            setMessage(v);
+          }}
+        />
+        <button
+          className={"button default"}
+          onClick={() => {
+            const m = message;
 
-//             if (m.length) {
-//               publish(m, { persist: true });
-//               setMessage("");
-//             }
-//           }}
-//         >
-//           Send
-//         </button>
-//       </div>
-//       <MessageList messages={messages} />
-//     </div>
-//   );
-// };
+            if (m.length) {
+              publish(m, { persist: true });
+              setMessage("");
+            }
+          }}
+        >
+          Send
+        </button>
+      </div>
+      <MessageList messages={messages} />
+    </div>
+  );
+};
 
 const ParticipantView = ({ participantId }) => {
   const webcamRef = useRef(null);
@@ -421,7 +468,7 @@ const ParticipantsView = () => {
         padding: borderRadius,
       }}
     >
-      <Title title={"Participants"} />
+      <Title dark title={"Participants"} />
       {chunk([...participants.keys()]).map((k) => (
         <div style={{ display: "flex" }}>
           {k.map((l) => (
@@ -763,86 +810,120 @@ function MeetingView({ onNewMeetingIdToken, onMeetingLeave }) {
       style={{
         display: "flex",
         flexDirection: "column",
-        backgroundColor: "#212032",
+        backgroundColor: "#D6E9FE",
       }}
     >
-      <div style={{ height: tollbarHeight }}>
-        <button className={"button red"} onClick={leave}>
-          LEAVE
-        </button>
-        <button className={"button blue"} onClick={toggleMic}>
-          toggleMic
-        </button>
-        <button
-          className={"button blue"}
-          onClick={() => {
-            toggleWebcam();
-          }}
-        >
-          toggleWebcam
-        </button>
-        <button className={"button blue"} onClick={toggleScreenShare}>
-          toggleScreenShare
-        </button>
-        <button className={"button blue"} onClick={handlestartVideo}>
-          startVideo
-        </button>
-        <button className={"button blue"} onClick={handlestopVideo}>
-          stopVideo
-        </button>
-        <button className={"button blue"} onClick={handleresumeVideo}>
-          resumeVideo
-        </button>
-        <button className={"button blue"} onClick={handlepauseVideo}>
-          pauseVideo
-        </button>
-        <button className={"button blue"} onClick={handlesseekVideo}>
-          seekVideo
-        </button>
-        <button className={"button blue"} onClick={handleStartLiveStream}>
-          Start Live Stream
-        </button>
-        <button className={"button blue"} onClick={handleStopLiveStream}>
-          Stop Live Stream
-        </button>
-        <button className={"button blue"} onClick={handleStartRecording}>
-          start recording
-        </button>
-        <button className={"button blue"} onClick={handleStopRecording}>
-          stop recording
-        </button>
-        <button
-          className={"button blue"}
-          onClick={() => setParticipantViewVisible((s) => !s)}
-        >
-          Switch to {participantViewVisible ? "Connections" : "Participants"}{" "}
-          view
-        </button>
+      <div className="header-top">
+        <div>
+          <img src="https://static.zujonow.com/videosdk.live/videosdk_logo_circle_big.png" alt="logo" className="logo"/>
+        </div>
+        <div className="jss107 controls">
+        <div class="jss123 jss103">
+          <div class="jss149 jss103">
+            <div className="ml-24 featured-btn">
+              <button className={"button btn-featured-transparent"} onClick={toggleMic}>
+                <Mic/>
+              </button>
+            </div>
+            <div className="ml-24 featured-btn">
+              <button
+                className={"button btn-featured-transparent"}
+                onClick={() => {
+                  toggleWebcam();
+                }}
+              >
+                <Videocam/>
+              </button>
+            </div>
+            <div className="ml-24 featured-btn">
+              <button className={"button btn-featured-transparent"} onClick={toggleScreenShare}>
+                <ScreenShare/>
+              </button>
+            </div>
+            <div className="ml-24 featured-btn">
+              <button className={"button btn-featured-transparent"} onClick={handleStartRecording}>
+                <RecordVoiceOver/>
+              </button>
+            </div>
+            <div className="ml-24 featured-btn">
+              <button className={"button btn-featured-transparent"} onClick={handleStopRecording}>
+                <VoiceOverOff/>
+              </button>
+            </div>
+          </div>
+          <div class="leave-btn">
+            <button className={"button red"} onClick={leave}>
+              LEAVE
+            </button>
+          </div>
 
-        <button
-          className={"button blue"}
-          onClick={async () => {
-            const meetingId = prompt(
-              `Please enter meeting id where you want Connect`
-            );
-            if (meetingId) {
-              try {
-                await connectTo({
-                  meetingId,
-                  payload: "This is Testing Payload",
-                });
-              } catch (e) {
-                console.log("Connect to Error", e);
+          {/*<div className="jss126 jss103">
+            <div className="ml-24">
+              <button className={"button btn-featured-transparent"} onClick={handlestartVideo}>
+                <PlayCircleFilledWhite/>
+              </button>
+            </div>
+            <div className="ml-24">
+              <button className={"button btn-featured-transparent"} onClick={handlestopVideo}>
+                <Stop/>
+              </button>
+            </div>
+            <div className="ml-24">
+              <button className={"button btn-featured-transparent"} onClick={handleresumeVideo}>
+                resumeVideo
+              </button>
+            </div>  
+            <div className="ml-24">
+              <button className={"button btn-featured-transparent"} onClick={handlepauseVideo}>
+                <PauseCircleOutline/>
+              </button>
+            </div>
+          </div>
+           <button className={"button btn-featured-transparent"} onClick={handlesseekVideo}>
+            seekVideo
+          </button>
+          <button className={"button btn-featured-transparent"} onClick={handleStartLiveStream}>
+            Start Live Stream
+          </button>
+          <button className={"button btn-featured-transparent"} onClick={handleStopLiveStream}>
+            Stop Live Stream
+          </button> */}
+          
+          {/* <button
+            className={"button btn-featured-transparent"}
+            onClick={() => setParticipantViewVisible((s) => !s)}
+          >
+            Switch to {participantViewVisible ? "Connections" : "Participants"}{" "}
+            view
+          </button> */}
+
+          {/* <button
+            className={"button btn-featured-transparent"}
+            onClick={async () => {
+              const meetingId = prompt(
+                `Please enter meeting id where you want Connect`
+              );
+              if (meetingId) {
+                try {
+                  await connectTo({
+                    meetingId,
+                    payload: "This is Testing Payload",
+                  });
+                } catch (e) {
+                  console.log("Connect to Error", e);
+                }
+              } else {
+                alert("Empty meetingId!");
               }
-            } else {
-              alert("Empty meetingId!");
-            }
-          }}
-        >
-          Make Connections
-        </button>
+            }}
+          >
+            Make Connections
+          </button> */}
+        </div>
       </div>
-      <h1 className="textWhite">Meeting id is : {meetingId}</h1>
+      </div>
+      
+      <h1>Meeting id is : {meetingId}</h1>
       <div style={{ display: "flex", flex: 1 }}>
         <div
           style={{
