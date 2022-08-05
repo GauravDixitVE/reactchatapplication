@@ -14,6 +14,7 @@ import ReactPlayer from "react-player";
 import MeetingChat from "./components/MeetingChat/MeetingChat";
 
 const primary = "#3E84F6";
+// const primary = "#212032";
 
 const width = 400;
 const height = (width * 2) / 3;
@@ -420,7 +421,7 @@ const ParticipantsView = () => {
         padding: borderRadius,
       }}
     >
-      <Title dark title={"Participants"} />
+      <Title title={"Participants"} />
       {chunk([...participants.keys()]).map((k) => (
         <div style={{ display: "flex" }}>
           {k.map((l) => (
@@ -762,7 +763,7 @@ function MeetingView({ onNewMeetingIdToken, onMeetingLeave }) {
       style={{
         display: "flex",
         flexDirection: "column",
-        backgroundColor: "#D6E9FE",
+        backgroundColor: "#212032",
       }}
     >
       <div style={{ height: tollbarHeight }}>
@@ -841,7 +842,7 @@ function MeetingView({ onNewMeetingIdToken, onMeetingLeave }) {
           Make Connections
         </button>
       </div>
-      <h1>Meeting id is : {meetingId}</h1>
+      <h1 className="textWhite">Meeting id is : {meetingId}</h1>
       <div style={{ display: "flex", flex: 1 }}>
         <div
           style={{

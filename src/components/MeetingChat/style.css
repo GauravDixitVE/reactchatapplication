@@ -1,9 +1,8 @@
 .main{
-    margin-left: 'border-radius';
-    width: '400';
-    background-color: '#3E84F6';
-    overflow-y: "scroll";
-    /* borderRadius; */
-    height: calc(100vh - 976px);
-    padding: 8;
+    margin-left: 8px;
+    width: 400px;
+    background-color: #333244;
+    overflow-y: scroll;
+    /* height: calc(100vh - 976px); */
+    padding: 8px;
 }

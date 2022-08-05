@@ -23,19 +23,9 @@ const MeetingChat = ({ tollbarHeight }) => {
     const { publish, messages } = usePubSub("CHAT", {});
     
     return (
-      <div
-        style={{
-          marginLeft: borderRadius,
-          width: 400,
-          backgroundColor: primary,
-          overflowY: "scroll",
-          borderRadius,
-          height: `calc(100vh - ${tollbarHeight + 2 * borderRadius}px)`,
-          padding: borderRadius,
-        }}
-      >
-        <h2 style={{ color: "#fff" }}>Chat</h2>
-  
+      <div className="main" >
+        <h2 className="textWhite">Chat</h2>
+        <hr />
         <div style={{ display: "flex" }}>
           <input
             value={message}
@@ -48,7 +38,7 @@ const MeetingChat = ({ tollbarHeight }) => {
             className={"button default"}
             onClick={() => {
               const m = message;
-  
+
               if (m.length) {
                 publish(m, { persist: true });
                 setMessage("");
@@ -58,7 +48,9 @@ const MeetingChat = ({ tollbarHeight }) => {
             Send
           </button>
         </div>
+  
         <MessageList messages={messages} />
+        
       </div>
     );
 };
