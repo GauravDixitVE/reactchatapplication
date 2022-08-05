@@ -924,7 +924,6 @@ function MeetingView({ onNewMeetingIdToken, onMeetingLeave }) {
           </div>
         </div>
       </div>
-      <hr />
       <h1 className="textWhite">Meeting id is : {meetingId}</h1>
       <div style={{ display: "flex", flex: 1 }}>
         <div
