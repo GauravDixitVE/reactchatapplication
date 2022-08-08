@@ -1,0 +1,8 @@
+.main{
+    margin-left: 8px;
+    width: 400px;
+    background-color: #333244;
+    overflow-y: scroll;
+    /* height: calc(100vh - 976px); */
+    padding: 8px;
+}
