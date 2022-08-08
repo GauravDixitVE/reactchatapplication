@@ -11,11 +11,25 @@ import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import { JoiningScreen } from "./components/JoiningScreen";
 import ReactPlayer from "react-player";
-import {Mic,Videocam,ScreenShare,PlayCircleFilledWhite,Stop,PauseCircleOutline,RecordVoiceOver,VoiceOverOff} from '@material-ui/icons';
+import {
+  Mic,
+  MicOff,
+  Videocam,
+  VideocamOff,
+  ScreenShare,
+  PlayCircleFilledWhite,
+  Stop,
+  PauseCircleOutline,
+  RecordVoiceOver,
+  VoiceOverOff,
+  
+
+} from '@material-ui/icons';
 
 import MeetingChat  from './components/MeetingChat/MeetingChat';
 
 import ParticipantsView from './components/ParticipantsView';
+import './App.css';
 
 const primary = "#333244";
 
@@ -322,6 +336,9 @@ const ConnectionsView = () => {
 function MeetingView({ onNewMeetingIdToken, onMeetingLeave }) {
   const [participantViewVisible, setParticipantViewVisible] = useState(true);
 
+  const [checkCam,setCamState] = useState(true); // Webcam
+  const [checkMic,setMicState] = useState(true); // Mic
+
   function onParticipantJoined(participant) {
     console.log(" onParticipantJoined", participant);
   }
@@ -517,6 +534,36 @@ function MeetingView({ onNewMeetingIdToken, onMeetingLeave }) {
     stopRecording();
   };
 
+  const _handleToggleWebcam = () => {
+    
+      if(checkCam==false)
+      {
+        setCamState(true);
+      }
+      if(checkCam==true)
+      {
+        setCamState(false);
+      }
+
+      toggleWebcam();
+
+  }
+
+  const _handleToggleMic = () => {
+    
+    if(checkMic==false)
+    {
+      setMicState(true);
+    }
+    if(checkMic==true)
+    {
+      setMicState(false);
+    }
+
+    toggleMic();
+
+}
+
   const tollbarHeight = 120;
 
   return (
@@ -535,38 +582,41 @@ function MeetingView({ onNewMeetingIdToken, onMeetingLeave }) {
           <div className="jss123 jss103">
             <div className="jss149 jss103">
               <div className="ml-24 featured-btn">
-                <button className={"button btn-featured-transparent"} onClick={toggleMic}>
-                  <Mic/>
+                <button className={"button btn-featured-transparent"} 
+                onClick={(event) => _handleToggleMic(event)} 
+                title= {checkMic ? 'Off' : 'On'}>
+                 {checkMic ? <Mic/> : <MicOff/>}
                 </button>
               </div>
               <div className="ml-24 featured-btn">
                 <button
-                  className={"button btn-featured-transparent"}
-                  onClick={() => {
-                    toggleWebcam();
-                  }}
+                  className={"button btn-featured-transparent textPrimary"}
+                  onClick={(event) => 
+                    _handleToggleWebcam(event)
+                  }
+                  title={checkCam ? 'Off' :'On' }
                 >
-                  <Videocam/>
+                {checkCam ? <Videocam/> :<VideocamOff/> }
                 </button>
               </div>
               <div className="ml-24 featured-btn">
-                <button className={"button btn-featured-transparent"} onClick={toggleScreenShare}>
+                <button className={"button btn-featured-transparent"} onClick={toggleScreenShare} title="Screenshare">
                   <ScreenShare/>
                 </button>
               </div>
               <div className="ml-24 featured-btn">
-                <button className={"button btn-featured-transparent"} onClick={handleStartRecording}>
+                <button className={"button btn-featured-transparent"} onClick={handleStartRecording} title="Start Recording">
                   <RecordVoiceOver/>
                 </button>
               </div>
               <div className="ml-24 featured-btn">
-                <button className={"button btn-featured-transparent"} onClick={handleStopRecording}>
+                <button className={"button btn-featured-transparent"} onClick={handleStopRecording} title="Stop Recording">
                   <VoiceOverOff/>
                 </button>
               </div>
             </div>
             <div class="leave-btn">
-              <button className={"button red"} onClick={leave}>
+              <button className={"button red b"} onClick={leave} title="Leave">
                 LEAVE
               </button>
             </div>
