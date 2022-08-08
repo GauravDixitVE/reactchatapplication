@@ -12,6 +12,16 @@ code {
     monospace;
 }
 
+.MuiBox-root-19 {
+  left: 0px;
+  right: 0px;
+  bottom: 16px;
+  position: absolute;
+}
+
+.textWhite{
+  color: beige;
+}
 /* div .button {
   margin: 0 15px 15px 0;
 } */

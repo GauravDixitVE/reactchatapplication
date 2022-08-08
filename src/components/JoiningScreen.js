@@ -49,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
   },
 }));
+  
 
 export function JoiningScreen({
   participantName,
