@@ -339,6 +339,8 @@ function MeetingView({ onNewMeetingIdToken, onMeetingLeave }) {
   const [checkCam,setCamState] = useState(true); // Webcam
   const [checkMic,setMicState] = useState(true); // Mic
 
+  const [checkRec,setRecState] = useState(false); // Rec
+
   function onParticipantJoined(participant) {
     console.log(" onParticipantJoined", participant);
   }
@@ -564,6 +566,22 @@ function MeetingView({ onNewMeetingIdToken, onMeetingLeave }) {
 
 }
 
+const _handleRecording = () => {
+    
+  
+  if(checkRec==false)
+  {
+    handleStartRecording();
+    setRecState(true);
+  }
+  if(checkRec==true)
+  {
+    handleStopRecording();
+    setRecState(false);
+  }
+
+}
+
   const tollbarHeight = 120;
 
   return (
@@ -600,20 +618,24 @@ function MeetingView({ onNewMeetingIdToken, onMeetingLeave }) {
                 </button>
               </div>
               <div className="ml-24 featured-btn">
-                <button className={"button btn-featured-transparent"} onClick={toggleScreenShare} title="Screenshare">
+                <button className={"button btn-featured-transparent"} 
+                onClick={toggleScreenShare} 
+                title="Screenshare">
                   <ScreenShare/>
                 </button>
               </div>
               <div className="ml-24 featured-btn">
-                <button className={"button btn-featured-transparent"} onClick={handleStartRecording} title="Start Recording">
-                  <RecordVoiceOver/>
+                <button className={"button btn-featured-transparent"} 
+                onClick={(event) => _handleRecording(event)} 
+                title= {checkRec ? 'Stop Recording' : 'Start Recording'} >
+                {checkRec ? <RecordVoiceOver/> : <VoiceOverOff/> }
                 </button>
               </div>
-              <div className="ml-24 featured-btn">
+              {/* <div className="ml-24 featured-btn">
                 <button className={"button btn-featured-transparent"} onClick={handleStopRecording} title="Stop Recording">
                   <VoiceOverOff/>
                 </button>
-              </div>
+              </div> */}
             </div>
             <div class="leave-btn">
               <button className={"button red b"} onClick={leave} title="Leave">
