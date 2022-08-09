@@ -22,9 +22,12 @@ import {
   PauseCircleOutline,
   RecordVoiceOver,
   VoiceOverOff,
-  
-
+  Message,
+  SpeakerNotesOff
+  // CommentsDisabled,
 } from '@material-ui/icons';
+// import MessageIcon from '@mui/icons-material/Message';
+// import CommentsDisabledIcon from '@mui/icons-material/CommentsDisabled';
 
 import MeetingChat  from './components/MeetingChat/MeetingChat';
 
@@ -122,89 +125,6 @@ const ExternalVideo = () => {
     </div>
   );
 };
-
-const MessageList = ({ messages }) => {
-  return (
-    <div>
-      {messages?.map((message, i) => {
-        const { senderName, message: text, timestamp } = message;
-
-        return (
-          <div
-            style={{
-              margin: 8,
-              backgroundColor: "darkblue",
-              borderRadius: 8,
-              overflow: "hidden",
-              padding: 8,
-              color: "#fff",
-            }}
-            key={i}
-          >
-            <p style={{ margin: 0, padding: 0, fontStyle: "italic" }}>
-              {senderName}
-            </p>
-            <h3 style={{ margin: 0, padding: 0, marginTop: 4 }}>{text}</h3>
-            <p
-              style={{
-                margin: 0,
-                padding: 0,
-                opacity: 0.6,
-                marginTop: 4,
-              }}
-            >
-              {formatAMPM(new Date(timestamp))}
-            </p>
-          </div>
-        );
-      })}
-    </div>
-  );
-};
-
-/*const MeetingChat = ({ tollbarHeight }) => {
-  const { publish, messages } = usePubSub("CHAT", {});
-  const [message, setMessage] = useState("");
-  return (
-    <div
-      style={{
-        marginLeft: borderRadius,
-        width: 400,
-        backgroundColor: primary,
-        overflowY: "scroll",
-        borderRadius,
-        height: `calc(100vh - ${tollbarHeight + 2 * borderRadius}px)`,
-        padding: borderRadius,
-      }}
-    >
-      <Title title={"Chat"} />
-
-      <div style={{ display: "flex" }}>
-        <input
-          value={message}
-          onChange={(e) => {
-            const v = e.target.value;
-            setMessage(v);
-          }}
-        />
-        <button
-          className={"button default"}
-          onClick={() => {
-            const m = message;
-
-            if (m.length) {
-              publish(m, { persist: true });
-              setMessage("");
-            }
-          }}
-        >
-          Send
-        </button>
-      </div>
-      <MessageList messages={messages} />
-    </div>
-  );
-};*/
 
 
 const ConnectionView = ({ connectionId }) => {
@@ -337,6 +257,7 @@ function MeetingView({ onNewMeetingIdToken, onMeetingLeave }) {
 
   const [checkCam,setCamState] = useState(true); // Webcam
   const [checkMic,setMicState] = useState(true); // Mic
+  const [checkChat,setChatState] = useState(true); // Mic
 
   const [checkRec,setRecState] = useState(false); // Rec
 
@@ -564,6 +485,21 @@ function MeetingView({ onNewMeetingIdToken, onMeetingLeave }) {
     toggleMic();
 
 }
+const _handleToggleChat = () => {
+    
+    if(checkChat==false)
+    {
+      setChatState(true);
+    }
+    if(checkChat==true)
+    {
+      setChatState(false);
+    }
+
+    // toggleMic();
+    // messages();
+
+}
 
 const _handleRecording = () => {
     
@@ -598,14 +534,22 @@ const _handleRecording = () => {
         <div className="jss107 controls">
           <div className="jss123 jss103">
             <div className="jss149 jss103">
-              <div className="ml-24 featured-btn">
+              <div className="ml-24 featured-btn header-icons">
+                <button className={"button btn-featured-transparent"} 
+                  onClick={(event) => _handleToggleChat(event)} 
+                  title= {checkChat ? 'Off' : 'On'}
+                >
+                 {checkChat ? <Message /> : <SpeakerNotesOff />}
+                </button>
+              </div>
+              <div className="ml-24 featured-btn header-icons">
                 <button className={"button btn-featured-transparent"} 
                 onClick={(event) => _handleToggleMic(event)} 
                 title= {checkMic ? 'Off' : 'On'}>
                  {checkMic ? <Mic/> : <MicOff/>}
                 </button>
               </div>
-              <div className="ml-24 featured-btn">
+              <div className="ml-24 featured-btn header-icons">
                 <button
                   className={"button btn-featured-transparent textPrimary"}
                   onClick={(event) => 
@@ -616,14 +560,14 @@ const _handleRecording = () => {
                 { checkCam ? <Videocam/> :<VideocamOff/> }
                 </button>
               </div>
-              <div className="ml-24 featured-btn">
+              <div className="ml-24 featured-btn header-icons">
                 <button className={"button btn-featured-transparent"} 
                 onClick={toggleScreenShare} 
                 title="Screenshare">
                   <ScreenShare/>
                 </button>
               </div>
-              <div className="ml-24 featured-btn">
+              <div className="ml-24 featured-btn header-icons">
                 <button className={"button btn-featured-transparent"} 
                 onClick={(event) => _handleRecording(event)} 
                 title= {checkRec ? 'Stop Recording' : 'Start Recording'} >
@@ -636,7 +580,7 @@ const _handleRecording = () => {
                 </button>
               </div> */}
             </div>
-            <div class="leave-btn">
+            <div className="leave-btn">
               <button className={"button red b"} onClick={leave} title="Leave">
                 LEAVE
               </button>
@@ -726,7 +670,7 @@ const _handleRecording = () => {
           {/* <ParticipantsView /> */}
           {participantViewVisible ? <ParticipantsView /> : <ConnectionsView />}
         </div>
-        <MeetingChat tollbarHeight={tollbarHeight} />
+        {(checkChat) ? <></> : <MeetingChat tollbarHeight={tollbarHeight} />}
       </div>
     </div>
   );
