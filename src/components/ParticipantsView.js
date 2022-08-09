@@ -1,25 +1,34 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
-    MeetingProvider,
-    useMeeting,
-    useParticipant,
-    useConnection,
-    usePubSub,
-  } from "@videosdk.live/react-sdk";
+  MeetingProvider,
+  useMeeting,
+  useParticipant,
+  useConnection,
+  usePubSub,
+} from "@videosdk.live/react-sdk";
 
-import { ParticipantView } from './ParticipantView';
+import ParticipantView from './ParticipantView';
+import { getToken } from "../API";
 
-export function ParticipantsView()
-{
-    const borderRadius = 8;
+const primary = "#333244";
+
+const width = 400;
+const height = (width * 2) / 3;
+const borderRadius = 8;
+
+const chunk = (arr) => {
+    const newArr = [];
+    while (arr.length) newArr.push(arr.splice(0, 3));
+    return newArr;
+  };
+
+  const Title = ({ title, dark }) => {
+    return <h2 style={{ color: dark ? primary : "#fff" }}>{title}</h2>;
+  };
+
+const ParticipantsView = () => {
     const { participants } = useMeeting();
   
-    const chunk = (arr) => {
-        const newArr = [];
-        while (arr.length) newArr.push(arr.splice(0, 3));
-        return newArr;
-      };
-
     return (
       <div
         style={{
@@ -29,7 +38,7 @@ export function ParticipantsView()
           padding: borderRadius,
         }}
       >
-        {/* <Title dark title={"Participants"} /> */}
+        {/* <Title title={"Participants"} /> */}
         {chunk([...participants.keys()]).map((k) => (
           <div style={{ display: "flex" }}>
             {k.map((l) => (
@@ -39,4 +48,6 @@ export function ParticipantsView()
         ))}
       </div>
     );
-  }
+  };
+
+  export default ParticipantsView;

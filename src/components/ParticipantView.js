@@ -1,21 +1,23 @@
+
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
-    MeetingProvider,
-    useMeeting,
-    useParticipant,
-    useConnection,
-    usePubSub,
-  } from "@videosdk.live/react-sdk";
+  MeetingProvider,
+  useMeeting,
+  useParticipant,
+  useConnection,
+  usePubSub,
+} from "@videosdk.live/react-sdk";
+import { getToken } from "../API";
+import ReactPlayer from "react-player";
+import Avatar from 'react-avatar';
 
-  import Avatar from 'react-avatar';
-  import ReactPlayer from "react-player";
+const primary = "#333244";
 
-export function ParticipantView ({participantId})
-{
-    const width = 400;
-    const height = (width * 2) / 3;
-    const borderRadius = 8;
+const width = 400;
+const height = (width * 2) / 3;
+const borderRadius = 8;
 
+const ParticipantView = (props) => {
     const webcamRef = useRef(null);
     const micRef = useRef(null);
     const screenShareRef = useRef(null);
@@ -23,7 +25,6 @@ export function ParticipantView ({participantId})
     const onStreamEnabled = (stream) => { };
     const onStreamDisabled = (stream) => { };
   
-    
     const {
       displayName,
       participant,
@@ -46,7 +47,7 @@ export function ParticipantView ({participantId})
       disableWebcam,
       pin,
       unpin,
-    } = useParticipant(participantId, {
+    } = useParticipant(props.participantId, {
       onStreamEnabled,
       onStreamDisabled,
     });
@@ -95,10 +96,10 @@ export function ParticipantView ({participantId})
       <div
         style={{
           width,
-          // backgroundColor: primary,
-          // borderRadius: borderRadius,
-          // overflow: "hidden",
-          // margin: borderRadius,
+        //   backgroundColor: primary,
+        //   borderRadius: borderRadius,
+        //   overflow: "hidden",
+        //   margin: borderRadius,
           padding: borderRadius,
           display: "flex",
           flex: 1,
@@ -111,8 +112,8 @@ export function ParticipantView ({participantId})
         <div
           style={{
             position: "relative",
-            // borderRadius: borderRadius,
-            // overflow: "hidden",
+            borderRadius: borderRadius,
+            overflow: "hidden",
             backgroundColor: "black",
             width: "100%",
             height: 300,
@@ -158,13 +159,14 @@ export function ParticipantView ({participantId})
                   opacity: 1,
                 }}
               > */}
+                
                 {
                 
                 webcamOn ? <Avatar name={"You"} size="40px" round="30px" style={{marginTop:0}}/> : 
                 <Avatar name={displayName} maxInitials={2} size="40px" round="30px" style={{marginTop:120,marginRight:195}}/>
                 
                 }
-                
+
               {/* </p> */}
             </div>
   
@@ -174,8 +176,8 @@ export function ParticipantView ({participantId})
                 top: 10,
                 left: 10,
               }}
-            >
-              <button
+            > */}
+              {/* <button
                 className="button blue"
                 style={
                   {
@@ -204,8 +206,8 @@ export function ParticipantView ({participantId})
                 }}
               >
                 Switch Participant
-              </button>
-            </div> */}
+              </button> */}
+            {/* </div> */}
           </div>
         </div>
   
@@ -219,11 +221,11 @@ export function ParticipantView ({participantId})
             width: "100%",
             height: 300,
           }}
-        >
-          <div
+        > */}
+          {/* <div
             style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}
-          >
-            <>
+          > */}
+            {/* <>
               <ReactPlayer
                 ref={screenShareRef}
                 //
@@ -244,15 +246,15 @@ export function ParticipantView ({participantId})
                   console.log(err, "participant video error");
                 }}
               />
-            </>
-            <div
+            </> */}
+            {/* <div
               style={{
                 position: "absolute",
                 top: borderRadius,
                 right: borderRadius,
               }}
-            >
-              <p
+            > */}
+              {/* <p
                 style={{
                   color: screenShareOn ? "green" : "red",
                   fontSize: 16,
@@ -261,19 +263,19 @@ export function ParticipantView ({participantId})
                 }}
               >
                 SCREEN SHARING
-              </p>
-            </div>
-          </div>
-        </div> */}
+              </p> */}
+            {/* </div> */}
+          {/* </div> */}
+        {/* </div> */}
         {/* <table>
           {[
             { k: "Name", v: displayName },
-            // { k: "webcamOn", v: webcamOn ? "YES" : "NO" },
-            // { k: "micOn", v: micOn ? "YES" : "NO" },
-            // { k: "screenShareOn", v: screenShareOn ? "YES" : "NO" },
-            // { k: "isLocal", v: isLocal ? "YES" : "NO" },
-            // { k: "isActiveSpeaker", v: isActiveSpeaker ? "YES" : "NO" },
-            // { k: "isMainParticipant", v: isMainParticipant ? "YES" : "NO" },
+            { k: "webcamOn", v: webcamOn ? "YES" : "NO" },
+            { k: "micOn", v: micOn ? "YES" : "NO" },
+            { k: "screenShareOn", v: screenShareOn ? "YES" : "NO" },
+            { k: "isLocal", v: isLocal ? "YES" : "NO" },
+            { k: "isActiveSpeaker", v: isActiveSpeaker ? "YES" : "NO" },
+            { k: "isMainParticipant", v: isMainParticipant ? "YES" : "NO" },
           ].map(({ k, v }) => (
             <tr key={k}>
               <td style={{ border: "1px solid #fff", padding: 4 }}>
@@ -287,4 +289,6 @@ export function ParticipantView ({participantId})
         </table> */}
       </div>
     );
-  }
+  };
+
+  export default ParticipantView;

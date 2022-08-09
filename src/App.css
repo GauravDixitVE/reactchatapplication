@@ -1,0 +1,9 @@
+.b
+{
+    background-color: '#3c52b2';
+    color: '#fff';
+}
+.b:hover {
+    background-color:'#fff';
+    color: '#3c52b2';
+}

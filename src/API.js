@@ -1,5 +1,5 @@
 const API_BASE_URL = "https://api.zujonow.com";
-const VIDEOSDK_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlrZXkiOiJmOTA1MzI3YS0yOTRiLTRkNTItYWMzMS04ZjhmZDY4ZjVhYTUiLCJwZXJtaXNzaW9ucyI6WyJhbGxvd19qb2luIl0sImlhdCI6MTY1OTY4MTc4MywiZXhwIjoxNjYwMjg2NTgzfQ.7vf3h7zLZ0mKkRcN_2lHdIOgl1tOMmDCdVxZAixwkg4";
+const VIDEOSDK_TOKEN = process.env.REACT_APP_VIDEOSDK_TOKEN
 const API_AUTH_URL = process.env.REACT_APP_AUTH_URL;
 
 export const getToken = async () => {
