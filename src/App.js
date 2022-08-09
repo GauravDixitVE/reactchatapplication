@@ -29,7 +29,6 @@ import {
 import MeetingChat  from './components/MeetingChat/MeetingChat';
 
 import ParticipantsView from './components/ParticipantsView';
-import './App.css';
 
 const primary = "#333244";
 
