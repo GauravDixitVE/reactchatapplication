@@ -614,7 +614,7 @@ const _handleRecording = () => {
                   }
                   title={checkCam ? 'Off' :'On' }
                 >
-                {checkCam ? <Videocam/> :<VideocamOff/> }
+                { checkCam ? <Videocam/> :<VideocamOff/> }
                 </button>
               </div>
               <div className="ml-24 featured-btn">
@@ -642,10 +642,6 @@ const _handleRecording = () => {
                 LEAVE
               </button>
             </div>
-
-
-
-              
 
               {/*<div className="jss126 jss103">
                 <div className="ml-24">
