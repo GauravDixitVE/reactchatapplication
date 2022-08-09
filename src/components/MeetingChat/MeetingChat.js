@@ -26,30 +26,33 @@ const MeetingChat = ({ tollbarHeight }) => {
       <div className="main" >
         <h2 className="textWhite">Chat</h2>
         <hr />
-        <div style={{ display: "flex" }}>
-          <input
-            value={message}
-            onChange={(e) => {
-              const v = e.target.value;
-              setMessage(v);
-            }}
-          />
-          <button
-            className={"button default"}
-            onClick={() => {
-              const m = message;
+        
+        <MessageList messages={messages} />
+        <div style={{ display: "flex", height: '75px', borderTop: '1px solid rgba(112, 112, 112, 0.2)', alignItems: 'center', paddingRight: '8px', paddingLeft: '8px', justifyContent: 'space-between' }}>
+            <input
+              value={message}
+              className="message-input"
+              placeholder="Write Your Message"
+              onChange={(e) => {
+                const v = e.target.value;
+                setMessage(v);
+              }}
+            />
+            <button
+              className={"button default myBtn"}
+              onClick={() => {
+                const m = message;
 
-              if (m.length) {
-                publish(m, { persist: true });
-                setMessage("");
-              }
-            }}
-          >
-            Send
-          </button>
+                if (m.length) {
+                  publish(m, { persist: true });
+                  setMessage("");
+                }
+              }}
+            >
+              Send
+            </button>
         </div>
   
-        <MessageList messages={messages} />
         
       </div>
     );

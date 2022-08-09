@@ -6,3 +6,22 @@
     /* height: calc(100vh - 976px); */
     padding: 8px;
 }
+.message-input {
+    height: 19px;
+    overflow: hidden;
+    width: 75%;
+    padding: 10px;
+    background: none;
+    color: #fff;
+    box-sizing: content-box;
+    border: 0.5px solid #fff;
+    border-radius: 9px;
+    font-size: 1rem;
+}
+.myBtn {
+    background: none;
+    color: #fff;
+    border-radius: 8px;
+    height: 40px;
+    cursor: pointer;
+}

@@ -14,7 +14,7 @@ const MessageList = ({ messages }) => {
     }
     
     return (
-      <div>
+      <div style={{height: '310px', overflowY: 'scroll'}}>
         {messages?.map((message, i) => {
           const { senderName, message: text, timestamp } = message;
   
@@ -22,7 +22,7 @@ const MessageList = ({ messages }) => {
             <div
               style={{
                 margin: 8,
-                backgroundColor: "darkblue",
+                backgroundColor: "rgb(61, 60, 78)",
                 borderRadius: 8,
                 overflow: "hidden",
                 padding: 8,
@@ -30,10 +30,10 @@ const MessageList = ({ messages }) => {
               }}
               key={i}
             >
+              <div style={{display: 'flex', justifyContent: 'space-between', alignItem: 'center'}}>
               <p style={{ margin: 0, padding: 0, fontStyle: "italic" }}>
                 {senderName}
               </p>
-              <h3 style={{ margin: 0, padding: 0, marginTop: 4 }}>{text}</h3>
               <p
                 style={{
                   margin: 0,
@@ -44,6 +44,8 @@ const MessageList = ({ messages }) => {
               >
                 {formatAMPM(new Date(timestamp))}
               </p>
+              </div>
+              <h3 style={{ margin: 0, padding: 0, marginTop: 4 }}>{text}</h3>
             </div>
           );
         })}
