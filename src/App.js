@@ -1,6 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
 import MeetingContainer from "./meetingContainer/MeetingContainer";
-import { MeetingProvider } from "@videosdk.live/react-sdk";
+import { MeetingProvider,useMeeting } from "@videosdk.live/react-sdk";
+import {
+  useParams
+} from "react-router-dom"
 import {
   MeetingAppProvider,
   meetingLayoutPriorities,
@@ -26,6 +29,9 @@ import { version as prebuiltSDKVersion } from "../package.json";
 import { meetingModes } from "./CONSTS";
 
 const App = () => {
+
+  
+
   const [meetingIdValidation, setMeetingIdValidation] = useState({
     isLoading: true,
     meetingId: null,
@@ -56,6 +62,9 @@ const App = () => {
 
     const paramKeys = {
       token: "token",
+      start_time : "start_time",
+      end_time : "end_time",
+      date : "date",
       micEnabled: "micEnabled",
       webcamEnabled: "webcamEnabled",
       name: "name",
@@ -405,6 +414,54 @@ const App = () => {
     paramKeys.joinWithoutUserInteraction === "true"
   );
 
+  const [joinDisable, setJoinDisable] = useState(true);
+
+  // timing 
+  const mMeeting = useMeeting({});
+  const end = mMeeting?.end;
+
+  const time = {
+    'start_time' : paramKeys.start_time,
+    'end_time'   : paramKeys.end_time,
+    'date'       : paramKeys.date
+  };
+
+  useEffect(() => {
+   
+    var startTime = time.start_time;
+    var endTime = time.end_time;
+    var urlDate = time.date;
+    const ud = urlDate.split('/'); 
+    const udMonth = ud[0];
+    const udDate = ud[1];
+    const udYear = ud[2];
+
+    var dt = new Date();//current Date that gives us current Time also  var startTime = '03:30:20';
+
+    const curr_date = dt.toLocaleDateString();
+    const curr_date_split = curr_date.split('/'); 
+    const currMonth = curr_date_split[0];
+    const currDate = curr_date_split[1];
+    const currYear = curr_date_split[2];
+
+    var s =  startTime.split(':');
+    
+    var dt1 = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(),
+    parseInt(s[0]), parseInt(s[1]), parseInt(s[2]));
+    var e =  endTime.split(':');
+    var dt2 = new Date(dt.getFullYear(), dt.getMonth(),
+    dt.getDate(),parseInt(e[0]), parseInt(e[1]), parseInt(e[2]));
+    if((udMonth == currMonth && udDate ==currDate && udYear ==currYear)&& dt >= dt1 && dt <= dt2){
+      // alert('Meeting on time');
+    }else{
+      alert('Please Join at the Schedule Time');
+      setUserHasInteracted(false);
+      setJoinDisable(false);
+    }
+    return () =>{ setUserHasInteracted('');setJoinDisable(''); } 
+  },[userHasInteracted]);
+  // end timing
+
   const [name, setName] = useState(paramKeys.name || "");
   const [joinScreenWebCam, setJoinScreenWebCam] = useState(
     paramKeys.joinScreenEnabled === "true"
@@ -653,6 +710,7 @@ const App = () => {
                 : paramKeys.webcamEnabled === "true",
           }}
           name={name}
+          joinDisable = {joinDisable}
           setName={setName}
           setSelectedMic={setSelectedMic}
           setSelectedWebcam={setSelectedWebcam}
