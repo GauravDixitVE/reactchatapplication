@@ -420,17 +420,33 @@ const App = () => {
   const mMeeting = useMeeting({});
   const end = mMeeting?.end;
 
-  const time = {
-    'start_time' : paramKeys.start_time,
-    'end_time'   : paramKeys.end_time,
-    'date'       : paramKeys.date
+  const timeFtSDetails = {
+    'region'     : paramKeys.region,
+    'token': paramKeys.token,
   };
 
-  useEffect(() => {
-   
-    var startTime = time.start_time;
-    var endTime = time.end_time;
-    var urlDate = time.date;
+  const getMeetingData = async () => {
+
+    const region = timeFtSDetails.region;
+    const meetingTimingDetails = await fetch('http://localhost:8080/get-token?u_token=123', {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({ region }),
+    });
+
+    const mdata = await meetingTimingDetails.json();
+
+    return mdata;
+  }
+
+  useEffect( async () => {
+
+    const mdata = await getMeetingData();
+
+    var startTime = mdata.start_time;
+    var endTime = mdata.end_time;
+    var urlDate = mdata.date;
+
     const ud = urlDate.split('/'); 
     const udMonth = ud[0];
     const udDate = ud[1];
@@ -447,12 +463,13 @@ const App = () => {
     var s =  startTime.split(':');
     
     var dt1 = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(),
-    parseInt(s[0]), parseInt(s[1]), parseInt(s[2]));
+    parseInt(s[0]), parseInt(s[1]));
     var e =  endTime.split(':');
     var dt2 = new Date(dt.getFullYear(), dt.getMonth(),
-    dt.getDate(),parseInt(e[0]), parseInt(e[1]), parseInt(e[2]));
+    dt.getDate(),parseInt(e[0]), parseInt(e[1]));
     if((udMonth == currMonth && udDate ==currDate && udYear ==currYear)&& dt >= dt1 && dt <= dt2){
       // alert('Meeting on time');
+      const endMeet = endMeeting(urlDate, startTime, endTime);
     }else{
       alert('Please Join at the Schedule Time');
       setUserHasInteracted(false);
@@ -460,6 +477,19 @@ const App = () => {
     }
     return () =>{ setUserHasInteracted('');setJoinDisable(''); } 
   },[userHasInteracted]);
+
+  const endMeeting = (date, sTime, eTime) => {
+    
+    const diff = new Date(date+" " + eTime) - new Date(date+" " + sTime);
+    var meetingDuration = Math.floor((diff/1000)/60);
+    
+    var endMin = meetingDuration * 1000;
+    setTimeout(() => {
+      window.location.reload();
+      return end;
+    }, endMin);
+
+  }
   // end timing
 
   const [name, setName] = useState(paramKeys.name || "");
