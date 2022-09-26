@@ -35,6 +35,7 @@ const style = {
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
+  textAlign: 'center'
 };
 const App = () => {  
   
@@ -425,7 +426,7 @@ const App = () => {
   
   // timing 
   const [meetingData, setMeetingData] = useState({});
-  const [meetinEndModal, setMeetinEndModal] = useState(true);
+  const [meetinEndModal, setMeetinEndModal] = useState(false);
   const mMeeting = useMeeting({});
   const end = mMeeting?.end;
 
@@ -590,12 +591,24 @@ const App = () => {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
+            Meeting is over
+          </Typography>
+          <hr />
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Thanks for joining
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+            Clck OK to exit
           </Typography>
-          <Button style={{corsur: 'pointer'}} onClick={(e) => closeMeeting(e) }>Close Child Modal</Button>
+          <Button 
+            style={{
+              corsur: 
+              'pointer', 
+              marginTop: '15px', 
+              backgroundColor: '#101019'
+            }}
+            onClick={(e) => closeMeeting(e) }
+          >OK</Button>
         </Box>
       </Modal>
       {meetingLeft ? (
