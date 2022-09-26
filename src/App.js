@@ -2,9 +2,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import MeetingContainer from "./meetingContainer/MeetingContainer";
 import { MeetingProvider,useMeeting } from "@videosdk.live/react-sdk";
 import {
-  useParams,
-} from "react-router-dom"
-import {
   MeetingAppProvider,
   meetingLayoutPriorities,
   meetingLayouts,
