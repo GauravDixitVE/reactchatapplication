@@ -70,6 +70,7 @@ const App = () => {
 
     const paramKeys = {
       token: "token",
+      a_token: 'a_token',
       start_time : "start_time",
       end_time : "end_time",
       date : "date",
@@ -432,8 +433,9 @@ const App = () => {
 
   const getMeetingData = async () => {
 
+    const auth_token = paramKeys.a_token;
     // const meetingTimingDetails = await fetch('http://localhost:8080/get-token?u_token=123', {
-    const meetingTimingDetails = await fetch('https://www.gosee.expert/api/validdatetime/MTI=', {
+    const meetingTimingDetails = await fetch('https://www.gosee.expert/api/validdatetime/'+auth_token, {
       method: "GET",
       headers: { "Content-type": "application/json" },
     });
@@ -455,10 +457,10 @@ const App = () => {
   
       var dt = new Date();//current Date that gives us current Time also  var startTime = '03:30:20';
   
-      const curr_date = dt.toLocaleDateString();
-      const curr_date_split = curr_date.split('/'); 
-      const currMonth = curr_date_split[0];
-      const currDate = curr_date_split[1];
+      const curr_date = dt.toLocaleDateString('es-CL');
+      const curr_date_split = curr_date.split('-'); 
+      const currDate = curr_date_split[0];
+      const currMonth = curr_date_split[1];
       const currYear = curr_date_split[2];
   
       var s =  startTime.split(':');
@@ -468,9 +470,11 @@ const App = () => {
       var e =  endTime.split(':');
       var dt2 = new Date(dt.getFullYear(), dt.getMonth(),
       dt.getDate(),parseInt(e[0]), parseInt(e[1]));
-      if((udMonth == currMonth && udDate ==currDate && udYear ==currYear)&& dt >= dt1 && dt <= dt2){
+      
+      if((udMonth === currMonth && udDate === currDate && udYear === currYear) && dt >= dt1 && dt <= dt2){
         // alert('Meeting on time');
-        const endMeet = endMeeting(urlDate, startTime, endTime);
+        const convUrlDate = `${udMonth}/${udDate}/${udYear}`;
+        const endMeet = endMeeting(convUrlDate, startTime, endTime);
       }else{
         alert('Please Join at the Schedule Time');
         setUserHasInteracted(false);
@@ -495,8 +499,9 @@ const App = () => {
     
     const diff = new Date(date+" " + eTime) - new Date(date+" " + sTime);
     var meetingDuration = Math.floor((diff/1000)/60);
-    
+
     var endMin = meetingDuration * 1000;
+    
     setTimeout(() => {
       setMeetinEndModal(true);
       return end;
@@ -754,7 +759,7 @@ const App = () => {
               preferredProtocol: paramKeys.preferredProtocol,
               autoConsume: false,
             }}
-            token={meetingData.values.authorization_token}
+            token={meetingData.authorization_token}
             joinWithoutUserInteraction
             deviceInfo={{
               sdkType: "prebuilt",
