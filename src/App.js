@@ -1,6 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
 import MeetingContainer from "./meetingContainer/MeetingContainer";
-import { MeetingProvider } from "@videosdk.live/react-sdk";
+import { MeetingProvider,useMeeting } from "@videosdk.live/react-sdk";
+import {
+  useParams,
+} from "react-router-dom"
 import {
   MeetingAppProvider,
   meetingLayoutPriorities,
@@ -9,7 +12,7 @@ import {
 } from "./MeetingAppContextDef";
 import JoinMeeting from "./components/JoinScreen";
 import ClickAnywhereToContinue from "./components/ClickAnywhereToContinue";
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress, Button, Typography, Modal } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import MeetingLeftScreen from "./components/MeetingLeftScreen";
 import ConfirmBox from "./components/ConfirmBox";
@@ -25,7 +28,20 @@ import useIsTab from "./utils/useIsTab";
 import { version as prebuiltSDKVersion } from "../package.json";
 import { meetingModes } from "./CONSTS";
 
-const App = () => {
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+const App = () => {  
+  
+  
   const [meetingIdValidation, setMeetingIdValidation] = useState({
     isLoading: true,
     meetingId: null,
@@ -56,6 +72,9 @@ const App = () => {
 
     const paramKeys = {
       token: "token",
+      start_time : "start_time",
+      end_time : "end_time",
+      date : "date",
       micEnabled: "micEnabled",
       webcamEnabled: "webcamEnabled",
       name: "name",
@@ -160,7 +179,7 @@ const App = () => {
     // required options
     let configErr;
 
-    if (typeof paramKeys.token !== "string") {
+    /*if (typeof paramKeys.token !== "string") {
       configErr = `"token" not provided`;
       playNotificationErr();
       setMeetingError({ message: configErr, code: 4001, isVisible: true });
@@ -173,7 +192,7 @@ const App = () => {
       setMeetingError({ message: configErr, code: 4001, isVisible: true });
       //
       // throw new Error(configErr);
-    }
+    }*/
     /* if (typeof paramKeys.name !== "string") {
       if (paramKeys.joinScreenEnabled !== "true") {
         configErr = `"name" not provided when joinScreen is disabled`;
@@ -405,6 +424,94 @@ const App = () => {
     paramKeys.joinWithoutUserInteraction === "true"
   );
 
+  const [joinDisable, setJoinDisable] = useState(true);
+  
+  // timing 
+  const [meetingData, setMeetingData] = useState({});
+  const [meetinEndModal, setMeetinEndModal] = useState(true);
+  const mMeeting = useMeeting({});
+  const end = mMeeting?.end;
+
+  const getMeetingData = async () => {
+
+    // const meetingTimingDetails = await fetch('http://localhost:8080/get-token?u_token=123', {
+    const meetingTimingDetails = await fetch('https://www.gosee.expert/api/validdatetime/MTI=', {
+      method: "GET",
+      headers: { "Content-type": "application/json" },
+    });
+    
+    const mdata = await meetingTimingDetails.json();
+
+    if(mdata.status){
+      setMeetingData(mdata.values);
+      const records=mdata.values;
+      
+      var startTime = records.start_at;
+      var endTime = records.end_at;
+      var urlDate = records.call_date;
+    
+      const ud = urlDate.split('/'); 
+      const udDate = ud[0];
+      const udMonth = ud[1];
+      const udYear = ud[2];
+  
+      var dt = new Date();//current Date that gives us current Time also  var startTime = '03:30:20';
+  
+      const curr_date = dt.toLocaleDateString();
+      const curr_date_split = curr_date.split('/'); 
+      const currMonth = curr_date_split[0];
+      const currDate = curr_date_split[1];
+      const currYear = curr_date_split[2];
+  
+      var s =  startTime.split(':');
+      
+      var dt1 = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(),
+      parseInt(s[0]), parseInt(s[1]));
+      var e =  endTime.split(':');
+      var dt2 = new Date(dt.getFullYear(), dt.getMonth(),
+      dt.getDate(),parseInt(e[0]), parseInt(e[1]));
+      if((udMonth == currMonth && udDate ==currDate && udYear ==currYear)&& dt >= dt1 && dt <= dt2){
+        // alert('Meeting on time');
+        const endMeet = endMeeting(urlDate, startTime, endTime);
+      }else{
+        alert('Please Join at the Schedule Time');
+        setUserHasInteracted(false);
+        setJoinDisable(false);
+      }
+      
+    }
+    return mdata;
+  }
+
+
+  useEffect( () => {
+
+    const aaa = getMeetingData();
+    return () =>{ setUserHasInteracted('');setJoinDisable(''); }
+   
+  // },[userHasInteracted]);
+  },[paramKeys]);
+  // },[paramKeys,meetingData]);
+
+  const endMeeting = (date, sTime, eTime) => {
+    
+    const diff = new Date(date+" " + eTime) - new Date(date+" " + sTime);
+    var meetingDuration = Math.floor((diff/1000)/60);
+    
+    var endMin = meetingDuration * 1000;
+    setTimeout(() => {
+      setMeetinEndModal(true);
+      return end;
+    }, endMin);
+
+  }
+
+  const closeMeeting = (e) => {
+    console.log('http://www.google.com');
+    let path = `https://www.google.com`;
+  }
+  // end timing
+
   const [name, setName] = useState(paramKeys.name || "");
   const [joinScreenWebCam, setJoinScreenWebCam] = useState(
     paramKeys.joinScreenEnabled === "true"
@@ -461,22 +568,38 @@ const App = () => {
       });
     }
   };
-
+  
   useEffect(() => {
-    if (paramKeys.meetingId && paramKeys.token) {
+    if (meetingData.meeting_id && meetingData.authorization_token) {
       validateMeetingId({
-        meetingId: paramKeys.meetingId,
-        token: paramKeys.token,
+        meetingId: meetingData.meeting_id,
+        token: meetingData.authorization_token,
         debug: paramKeys.debug === "true",
         region: paramKeys.region,
       });
     }
-  }, [paramKeys]);
+  }, [meetingData]);
 
   const theme = useTheme();
 
   return (
     <>
+      <Modal
+        open={meetinEndModal}
+        onClose={closeMeeting}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Text in a modal
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+          </Typography>
+          <Button style={{corsur: 'pointer'}} onClick={(e) => closeMeeting(e) }>Close Child Modal</Button>
+        </Box>
+      </Modal>
       {meetingLeft ? (
         paramKeys.isRecorder === "true" ? null : (
           <MeetingLeftScreen
@@ -620,7 +743,7 @@ const App = () => {
               preferredProtocol: paramKeys.preferredProtocol,
               autoConsume: false,
             }}
-            token={paramKeys.token}
+            token={meetingData.values.authorization_token}
             joinWithoutUserInteraction
             deviceInfo={{
               sdkType: "prebuilt",
@@ -653,6 +776,7 @@ const App = () => {
                 : paramKeys.webcamEnabled === "true",
           }}
           name={name}
+          joinDisable = {joinDisable}
           setName={setName}
           setSelectedMic={setSelectedMic}
           setSelectedWebcam={setSelectedWebcam}

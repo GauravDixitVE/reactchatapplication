@@ -126,6 +126,7 @@ export default function JoinMeeting({
   setSelectedMic,
   setSelectedWebcam,
   mode,
+  joinDisable
 }) {
   const classes = useStyles();
   const theme = useTheme();
@@ -716,6 +717,7 @@ export default function JoinMeeting({
                 }}
               >
                 <MeetingDetailModal
+                  joinDisable = {joinDisable}
                   internalPadding={internalPadding}
                   name={name}
                   setName={setName}

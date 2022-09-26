@@ -29,6 +29,7 @@ export default function MeetingDetailModal({
   startMeeting,
   meetingTitle,
   meetingUrl,
+  joinDisable
 }) {
   const theme = useTheme();
   const [descriptionBoxHeight, setDescriptionBoxHeight] = useState(0);
@@ -247,6 +248,7 @@ export default function MeetingDetailModal({
                 <Button
                   color="primary"
                   variant="contained"
+                  disabled={!joinDisable}
                   onClick={(e) => {
                     const isValid = handleValidation();
                     if (isValid) {
