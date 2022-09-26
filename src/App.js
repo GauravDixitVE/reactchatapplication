@@ -504,7 +504,7 @@ const App = () => {
   }
 
   const closeMeeting = (e) => {
-    console.log('http://www.google.com');
+    // console.log('http://www.google.com');
     let path = `https://www.google.com`;
     window.location.href = path;
   }
