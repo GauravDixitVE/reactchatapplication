@@ -428,6 +428,8 @@ const App = () => {
   // timing 
   const [meetingData, setMeetingData] = useState({});
   const [meetinEndModal, setMeetinEndModal] = useState(false);
+  const [meetinEndModalHead, setMeetinEndModalHead] = useState('');
+  const [meetinEndModalBody, setMeetinEndModalBody] = useState('');
   const mMeeting = useMeeting({});
   const end = mMeeting?.end;
 
@@ -482,29 +484,39 @@ const App = () => {
                 const endMeet = endMeeting(convUrlDate, startTime, endTime);
                 
               } else {
-                alert('Please Join at the Schedule Time');
+                setMeetinEndModalHead('Join on wrong meeting time');
+                setMeetinEndModalBody('Please Join at the Schedule Time');
                 setUserHasInteracted(false);
                 setJoinDisable(false);
+                setMeetinEndModal(true);
               }
             } else {
-              alert('Please Join at the Schedule Time');
+              setMeetinEndModalHead('Join on wrong meeting time');
+              setMeetinEndModalBody('Please Join at the Schedule Time');
               setUserHasInteracted(false);
               setJoinDisable(false);
+              setMeetinEndModal(true);
             }
           } else {
-            alert('Please Join at the Schedule Time');
+            setMeetinEndModalHead('Join on wrong meeting time');
+            setMeetinEndModalBody('Please Join at the Schedule Time');
             setUserHasInteracted(false);
             setJoinDisable(false);
+            setMeetinEndModal(true);
           }
         } else {
-          alert('Please Join at the Schedule Time');
+          setMeetinEndModalHead('Join on wrong meeting time');
+          setMeetinEndModalBody('Please Join at the Schedule Time');
           setUserHasInteracted(false);
           setJoinDisable(false);
+          setMeetinEndModal(true);
         }
       } else {
-        alert('Please Join at the Schedule Time');
+        setMeetinEndModalHead('Join on wrong meeting time');
+        setMeetinEndModalBody('Please Join at the Schedule Time');
         setUserHasInteracted(false);
         setJoinDisable(false);
+        setMeetinEndModal(true);
       }      
     }
     return mdata;
@@ -528,6 +540,8 @@ const App = () => {
     var endMin = meetingDuration * 1000;
     
     setTimeout(() => {
+      setMeetinEndModalHead('Meeting is over');
+      setMeetinEndModalBody('Thanks for joining');
       setMeetinEndModal(true);
       return end;
     }, endMin);
@@ -621,11 +635,11 @@ const App = () => {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Meeting is over
+            {meetinEndModalHead}            
           </Typography>
           <hr />
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Thanks for joining
+            {meetinEndModalBody}            
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             Clck OK to exit
