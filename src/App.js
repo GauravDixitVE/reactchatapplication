@@ -38,7 +38,12 @@ const style = {
   textAlign: 'center'
 };
 const App = () => {  
-  
+
+  const[backgroundBlur,setBackgroundBlue] = useState('false');
+
+  if(backgroundBlur){
+    document.getElementById('root').style.filter = 'blur(10px)';
+  }
   
   const [meetingIdValidation, setMeetingIdValidation] = useState({
     isLoading: true,
@@ -489,6 +494,7 @@ const App = () => {
                 setUserHasInteracted(false);
                 setJoinDisable(false);
                 setMeetinEndModal(true);
+                setBackgroundBlue(true);
               }
             } else {
               setMeetinEndModalHead('Join on wrong meeting time');
@@ -496,6 +502,7 @@ const App = () => {
               setUserHasInteracted(false);
               setJoinDisable(false);
               setMeetinEndModal(true);
+              setBackgroundBlue(true);
             }
           } else {
             setMeetinEndModalHead('Join on wrong meeting time');
@@ -503,6 +510,7 @@ const App = () => {
             setUserHasInteracted(false);
             setJoinDisable(false);
             setMeetinEndModal(true);
+            setBackgroundBlue(true);
           }
         } else {
           setMeetinEndModalHead('Join on wrong meeting time');
@@ -510,6 +518,7 @@ const App = () => {
           setUserHasInteracted(false);
           setJoinDisable(false);
           setMeetinEndModal(true);
+          setBackgroundBlue(true);
         }
       } else {
         setMeetinEndModalHead('Join on wrong meeting time');
@@ -517,6 +526,7 @@ const App = () => {
         setUserHasInteracted(false);
         setJoinDisable(false);
         setMeetinEndModal(true);
+        setBackgroundBlue(true);
       }      
     }
     return mdata;
@@ -543,6 +553,7 @@ const App = () => {
       setMeetinEndModalHead('Meeting is over');
       setMeetinEndModalBody('Thanks for joining');
       setMeetinEndModal(true);
+      setBackgroundBlue(true);
       return end;
     }, endMin);
 
