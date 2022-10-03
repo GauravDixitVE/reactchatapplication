@@ -455,9 +455,9 @@ const App = () => {
       const udMonth = ud[1];
       const udYear = ud[2];
   
-      var dt = new Date();//current Date that gives us current Time also  var startTime = '03:30:20';
+      var currentTime = new Date();//current Date that gives us current Time also  var startTime = '03:30:20';
   
-      const curr_date = dt.toLocaleDateString('es-CL');
+      const curr_date = currentTime.toLocaleDateString('es-CL');
       const curr_date_split = curr_date.split('-'); 
       const currDate = curr_date_split[0];
       const currMonth = curr_date_split[1];
@@ -465,22 +465,47 @@ const App = () => {
   
       var s =  startTime.split(':');
       
-      var dt1 = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(),
+      var mStartTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(),
       parseInt(s[0]), parseInt(s[1]));
       var e =  endTime.split(':');
-      var dt2 = new Date(dt.getFullYear(), dt.getMonth(),
-      dt.getDate(),parseInt(e[0]), parseInt(e[1]));
-      
-      if((udMonth === currMonth && udDate === currDate && udYear === currYear) && dt >= dt1 && dt <= dt2){
-        // alert('Meeting on time');
-        const convUrlDate = `${udMonth}/${udDate}/${udYear}`;
-        const endMeet = endMeeting(convUrlDate, startTime, endTime);
-      }else{
+      var mEndTime = new Date(currentTime.getFullYear(), currentTime.getMonth(),
+      currentTime.getDate(),parseInt(e[0]), parseInt(e[1]));
+
+      if (udYear === currYear) {        
+        if (udMonth === currMonth) {
+          if (udDate === currDate) {
+            if (currentTime >= mStartTime) {  //checking start time with current time
+              if (currentTime <= mEndTime) { //checking end time with current time
+
+                // alert('Meeting on time');
+                const convUrlDate = `${udMonth}/${udDate}/${udYear}`;
+                const endMeet = endMeeting(convUrlDate, startTime, endTime);
+                
+              } else {
+                alert('Please Join at the Schedule Time');
+                setUserHasInteracted(false);
+                setJoinDisable(false);
+              }
+            } else {
+              alert('Please Join at the Schedule Time');
+              setUserHasInteracted(false);
+              setJoinDisable(false);
+            }
+          } else {
+            alert('Please Join at the Schedule Time');
+            setUserHasInteracted(false);
+            setJoinDisable(false);
+          }
+        } else {
+          alert('Please Join at the Schedule Time');
+          setUserHasInteracted(false);
+          setJoinDisable(false);
+        }
+      } else {
         alert('Please Join at the Schedule Time');
         setUserHasInteracted(false);
         setJoinDisable(false);
-      }
-      
+      }      
     }
     return mdata;
   }
@@ -488,8 +513,8 @@ const App = () => {
 
   useEffect( () => {
 
-    const aaa = getMeetingData();
-    return () =>{ setUserHasInteracted('');setJoinDisable(''); }
+    const endM = getMeetingData();
+    return () =>{ setUserHasInteracted(''); setJoinDisable(''); }
    
   // },[userHasInteracted]);
   },[paramKeys]);
