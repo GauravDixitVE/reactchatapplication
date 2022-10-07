@@ -435,6 +435,7 @@ const App = () => {
   const [meetinEndModal, setMeetinEndModal] = useState(false);
   const [meetinEndModalHead, setMeetinEndModalHead] = useState('');
   const [meetinEndModalBody, setMeetinEndModalBody] = useState('');
+  const [meetinTwoMinWorning, setMeetinTwoMinWorning] = useState(false);
   const mMeeting = useMeeting({});
   const end = mMeeting?.end;
 
@@ -548,6 +549,14 @@ const App = () => {
     var meetingDuration = Math.floor((diff/1000)/60);
 
     var endMin = meetingDuration * 1000;
+    var twoMinEarly = (meetingDuration - 2) * 1000;
+
+    setTimeout(() => {
+      // setMeetinEndModalHead('Join on wrong meeting time');
+      // setMeetinEndModalBody('Only 2 minutes');
+      setMeetinTwoMinWorning(true);
+      setBackgroundBlue(true);
+    }, twoMinEarly);
     
     setTimeout(() => {
       setMeetinEndModalHead('Meeting is over');
@@ -563,6 +572,10 @@ const App = () => {
     // console.log('http://www.google.com');
     let path = `https://www.google.com`;
     window.location.href = path;
+  }
+
+  const closeTMeeting = () => {
+    setMeetinTwoMinWorning(false);
   }
   // end timing
 
@@ -666,6 +679,37 @@ const App = () => {
           >OK</Button>
         </Box>
       </Modal>
+
+      {/* Two minutes warning modal start */}
+      <Modal
+        open={meetinTwoMinWorning}
+        onClose={closeTMeeting}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Join on wrong meeting time
+          </Typography>
+          <hr />
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Only 2 minutes
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Clck OK to close
+          </Typography>
+          <Button 
+            style={{
+              corsur: 
+              'pointer', 
+              marginTop: '15px', 
+              backgroundColor: '#101019'
+            }}
+            onClick={(e) => closeTMeeting(e) }
+          >OK</Button>
+        </Box>
+      </Modal>
+      {/* Two minutes warning modal end */}
       {meetingLeft ? (
         paramKeys.isRecorder === "true" ? null : (
           <MeetingLeftScreen
