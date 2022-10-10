@@ -558,7 +558,15 @@ const App = () => {
       setBackgroundBlue(true);
     }, twoMinEarly);
     
-    setTimeout(() => {
+    setTimeout( async () => {
+
+      const auth_token = paramKeys.a_token;
+      const meetingTimingDetails = await fetch('https://www.gosee.expert/api/videocallrating/'+auth_token, {
+        method: "GET",
+        headers: { "Content-type": "application/json" },
+      });
+
+
       setMeetinEndModalHead('Meeting is over');
       setMeetinEndModalBody('Thanks for joining');
       setMeetinEndModal(true);
@@ -569,8 +577,7 @@ const App = () => {
   }
 
   const closeMeeting = (e) => {
-    // console.log('http://www.google.com');
-    let path = `https://www.google.com`;
+    let path = `https://www.gosee.expert/`;
     window.location.href = path;
   }
 
