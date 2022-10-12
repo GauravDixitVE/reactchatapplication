@@ -486,7 +486,7 @@ const App = () => {
               if (currentTime <= mEndTime) { //checking end time with current time
                 
                 const convUrlDate = `${udMonth}/${udDate}/${udYear}`;
-                const endMeet = endMeeting(convUrlDate, startTime, endTime, `${currentTime.getHours()}:${currentTime.getHours()}`);
+                const endMeet = endMeeting(convUrlDate, startTime, endTime, `${currentTime.getHours()}:${currentTime.getMinutes()}`);
                 
               } else {
                 setMeetinEndModalHead('Join on wrong meeting time');
@@ -543,19 +543,11 @@ const App = () => {
   // },[paramKeys,meetingData]);
 
   const endMeeting = (date, sTime, eTime, currentTime) => {
-    
     // const diff = new Date(date+" " + eTime) - new Date(date+" " + sTime);
     const currentTimeDiff = new Date(date+" " + eTime) - new Date(date+" " + currentTime);
-    var meetingDuration = Math.floor((currentTimeDiff/1000)/60);
+    var meetingDuration = Math.floor((currentTimeDiff/60)/1000);
     var endMin = (meetingDuration * 60) * 1000;
     var twoMinEarly = (meetingDuration - 2) * (60 * 1000);
-
-    // console.log("vlidjhvivho: ", meetingDuration);
-    // console.log("vlidjhvivho: eTime", eTime);
-    // console.log("vlidjhvivho: currentTimeDiff", currentTimeDiff);
-    // console.log("vlidjhvivho: currentTime ", currentTime);
-    // console.log("vlidjhvivho: endMin ", endMin);
-    // console.log("vlidjhvivho: twoMinEarly ", twoMinEarly);
 
     setTimeout(() => {
       setMeetinTwoMinWorning(true);
@@ -699,7 +691,7 @@ const App = () => {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Join on wrong meeting time
+            !!! Alert !!!
           </Typography>
           <hr />
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
