@@ -69,7 +69,7 @@ export default function MeetingDetailModal({
     const url= `https://api.videosdk.live/v2/sessions/?roomId=99zs-d4o5-koml`;
     const response = await fetch(url, options);
     const data = response.json;
-    console.log("cdnkdjcbdskjvbjubvd::: ", response);
+    // console.log("cdnkdjcbdskjvbjubvd::: ", response);
   }
 
   const { width: windowWidth } = useWindowSize();

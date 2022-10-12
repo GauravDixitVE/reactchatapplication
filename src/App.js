@@ -39,7 +39,7 @@ const style = {
 };
 const App = () => {  
 
-  const[backgroundBlur,setBackgroundBlue] = useState('false');
+  const[backgroundBlur,setBackgroundBlur] = useState(false);
 
   if(backgroundBlur){
     document.getElementById('root').style.filter = 'blur(10px)';
@@ -484,10 +484,9 @@ const App = () => {
           if (udDate === currDate) {
             if (currentTime >= mStartTime) {  //checking start time with current time
               if (currentTime <= mEndTime) { //checking end time with current time
-
-                // alert('Meeting on time');
+                
                 const convUrlDate = `${udMonth}/${udDate}/${udYear}`;
-                const endMeet = endMeeting(convUrlDate, startTime, endTime);
+                const endMeet = endMeeting(convUrlDate, startTime, endTime, `${currentTime.getHours()}:${currentTime.getHours()}`);
                 
               } else {
                 setMeetinEndModalHead('Join on wrong meeting time');
@@ -495,7 +494,7 @@ const App = () => {
                 setUserHasInteracted(false);
                 setJoinDisable(false);
                 setMeetinEndModal(true);
-                setBackgroundBlue(true);
+                setBackgroundBlur(true);
               }
             } else {
               setMeetinEndModalHead('Join on wrong meeting time');
@@ -503,7 +502,7 @@ const App = () => {
               setUserHasInteracted(false);
               setJoinDisable(false);
               setMeetinEndModal(true);
-              setBackgroundBlue(true);
+              setBackgroundBlur(true);
             }
           } else {
             setMeetinEndModalHead('Join on wrong meeting time');
@@ -511,7 +510,7 @@ const App = () => {
             setUserHasInteracted(false);
             setJoinDisable(false);
             setMeetinEndModal(true);
-            setBackgroundBlue(true);
+            setBackgroundBlur(true);
           }
         } else {
           setMeetinEndModalHead('Join on wrong meeting time');
@@ -519,7 +518,7 @@ const App = () => {
           setUserHasInteracted(false);
           setJoinDisable(false);
           setMeetinEndModal(true);
-          setBackgroundBlue(true);
+          setBackgroundBlur(true);
         }
       } else {
         setMeetinEndModalHead('Join on wrong meeting time');
@@ -527,7 +526,7 @@ const App = () => {
         setUserHasInteracted(false);
         setJoinDisable(false);
         setMeetinEndModal(true);
-        setBackgroundBlue(true);
+        setBackgroundBlur(true);
       }      
     }
     return mdata;
@@ -543,34 +542,38 @@ const App = () => {
   },[paramKeys]);
   // },[paramKeys,meetingData]);
 
-  const endMeeting = (date, sTime, eTime) => {
+  const endMeeting = (date, sTime, eTime, currentTime) => {
     
-    const diff = new Date(date+" " + eTime) - new Date(date+" " + sTime);
-    var meetingDuration = Math.floor((diff/1000)/60);
+    // const diff = new Date(date+" " + eTime) - new Date(date+" " + sTime);
+    const currentTimeDiff = new Date(date+" " + eTime) - new Date(date+" " + currentTime);
+    var meetingDuration = Math.floor((currentTimeDiff/1000)/60);
+    var endMin = (meetingDuration * 60) * 1000;
+    var twoMinEarly = (meetingDuration - 2) * (60 * 1000);
 
-    var endMin = meetingDuration * 1000;
-    var twoMinEarly = (meetingDuration - 2) * 1000;
+    // console.log("vlidjhvivho: ", meetingDuration);
+    // console.log("vlidjhvivho: eTime", eTime);
+    // console.log("vlidjhvivho: currentTimeDiff", currentTimeDiff);
+    // console.log("vlidjhvivho: currentTime ", currentTime);
+    // console.log("vlidjhvivho: endMin ", endMin);
+    // console.log("vlidjhvivho: twoMinEarly ", twoMinEarly);
 
     setTimeout(() => {
-      // setMeetinEndModalHead('Join on wrong meeting time');
-      // setMeetinEndModalBody('Only 2 minutes');
       setMeetinTwoMinWorning(true);
-      setBackgroundBlue(true);
     }, twoMinEarly);
     
     setTimeout( async () => {
 
-      const auth_token = paramKeys.a_token;
-      const meetingTimingDetails = await fetch('https://www.gosee.expert/api/videocallrating/'+auth_token, {
-        method: "GET",
-        headers: { "Content-type": "application/json" },
-      });
+      // const auth_token = paramKeys.a_token;
+      // const meetingTimingDetails = await fetch('https://www.gosee.expert/api/videocallrating/'+auth_token, {
+      //   method: "GET",
+      //   headers: { "Content-type": "application/json" },
+      // });
 
 
       setMeetinEndModalHead('Meeting is over');
       setMeetinEndModalBody('Thanks for joining');
       setMeetinEndModal(true);
-      setBackgroundBlue(true);
+      setBackgroundBlur(true);
       return end;
     }, endMin);
 
