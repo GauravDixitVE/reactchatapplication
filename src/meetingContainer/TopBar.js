@@ -1019,6 +1019,31 @@ const EndCallBTN = () => {
   const sendChatMessage = mMeeting?.sendChatMessage;
 
   const leave = mMeeting?.leave;
+  
+  const location = window.location;
+  
+  const urlParams = new URLSearchParams(location.search);
+  
+  const paramKeys = {
+    a_token: 'a_token',
+  };
+
+  
+
+  Object.keys(paramKeys).forEach((key) => {
+    paramKeys[key] = urlParams.get(key)
+      ? decodeURIComponent(urlParams.get(key))
+      : null;
+  });
+
+  const leaveVideoCallRating = async () =>{
+    const auth_token = paramKeys.a_token;
+    console.log(auth_token);
+      const meetingTimingDetails = await fetch('https://www.gosee.expert/api/videocallrating/'+auth_token, {
+        method: "GET",
+        headers: { "Content-type": "application/json" },
+      });
+  }
   const end = mMeeting?.end;
 
   const tollTipEl = useRef();
@@ -1062,7 +1087,7 @@ const EndCallBTN = () => {
             : participantCanEndMeeting &&
               meetingMode === meetingModes.CONFERENCE
             ? handleClick(e)
-            : leave();
+            : leaveVideoCallRating(); leave();
         }}
       />
       {participantCanEndMeeting && (
