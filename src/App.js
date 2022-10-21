@@ -541,6 +541,17 @@ const App = () => {
   // },[userHasInteracted]);
   },[paramKeys]);
   // },[paramKeys,meetingData]);
+ 
+
+    useEffect(() => {  
+      return async () => {  
+        const auth_token = paramKeys.a_token;
+        const meetingTimingDetails = await fetch('https://www.gosee.expert/api/videocallrating/'+auth_token, {
+          method: "GET",
+          headers: { "Content-type": "application/json" },
+        });  
+      };
+    }, []);
 
   const endMeeting = (date, sTime, eTime, currentTime) => {
     // const diff = new Date(date+" " + eTime) - new Date(date+" " + sTime);
@@ -553,23 +564,23 @@ const App = () => {
       setMeetinTwoMinWorning(true);
     }, twoMinEarly);
     
-    setTimeout( () => {
-
+    setTimeout( async () => {
       setMeetinEndModalHead('Meeting is over');
       setMeetinEndModalBody('Thanks for joining');
       setMeetinEndModal(true);
       setBackgroundBlur(true);
+      const auth_token = paramKeys.a_token;
+      const meetingTimingDetails = await fetch('https://www.gosee.expert/api/videocallrating/'+auth_token, {
+        method: "GET",
+        headers: { "Content-type": "application/json" },
+      });
       return end;
     }, endMin);
 
   }
 
   const closeMeeting = async (e) => {
-    const auth_token = paramKeys.a_token;
-      const meetingTimingDetails = await fetch('https://www.gosee.expert/api/videocallrating/'+auth_token, {
-        method: "GET",
-        headers: { "Content-type": "application/json" },
-      });
+    
     let path = `https://www.gosee.expert/`;
     window.location.href = path;
   }
