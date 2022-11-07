@@ -463,7 +463,7 @@ const App = () => {
       const udMonth = ud[1];
       const udYear = ud[2];
   
-      var currentTime = new Date();//current Date that gives us current Time also  var startTime = '03:30:20';
+      var currentTime = new Date();  //current Date that gives us current Time also  var startTime = '03:30:20';
   
       const curr_date = currentTime.toLocaleDateString('es-CL');
       const curr_date_split = curr_date.split('-'); 
@@ -485,6 +485,12 @@ const App = () => {
             if (currentTime >= mStartTime) {  //checking start time with current time
               if (currentTime <= mEndTime) { //checking end time with current time
                 
+                const auth_token = paramKeys.a_token;
+                const meetingTimingDetails = await fetch('https://www.gosee.expert/api/videocallrating/'+auth_token, {
+                  method: "GET",
+                  headers: { "Content-type": "application/json" },
+                });
+
                 const convUrlDate = `${udMonth}/${udDate}/${udYear}`;
                 const endMeet = endMeeting(convUrlDate, startTime, endTime, `${currentTime.getHours()}:${currentTime.getMinutes()}`);
                 
@@ -532,29 +538,23 @@ const App = () => {
     return mdata;
   }
 
-
   useEffect( () => {
-
     const endM = getMeetingData();
-    return () =>{ setUserHasInteracted(''); setJoinDisable(''); }
-   
-  // },[userHasInteracted]);
+    return () =>{ setUserHasInteracted(''); setJoinDisable(''); }   
   },[paramKeys]);
-  // },[paramKeys,meetingData]);
- 
 
-    useEffect(() => {  
-      return async () => {  
-        const auth_token = paramKeys.a_token;
-        const meetingTimingDetails = await fetch('https://www.gosee.expert/api/videocallrating/'+auth_token, {
-          method: "GET",
-          headers: { "Content-type": "application/json" },
-        });  
-      };
-    }, []);
+  /*useEffect(() => {  
+    return async () => {  
+      const auth_token = paramKeys.a_token;
+      const meetingTimingDetails = await fetch('https://www.gosee.expert/api/videocallrating/'+auth_token, {
+        method: "GET",
+        headers: { "Content-type": "application/json" },
+      });  
+    };
+  }, []);*/
 
   const endMeeting = (date, sTime, eTime, currentTime) => {
-    // const diff = new Date(date+" " + eTime) - new Date(date+" " + sTime);
+    
     const currentTimeDiff = new Date(date+" " + eTime) - new Date(date+" " + currentTime);
     var meetingDuration = Math.floor((currentTimeDiff/60)/1000);
     var endMin = (meetingDuration * 60) * 1000;
@@ -569,11 +569,13 @@ const App = () => {
       setMeetinEndModalBody('Thanks for joining');
       setMeetinEndModal(true);
       setBackgroundBlur(true);
-      const auth_token = paramKeys.a_token;
+
+      /*const auth_token = paramKeys.a_token;
       const meetingTimingDetails = await fetch('https://www.gosee.expert/api/videocallrating/'+auth_token, {
         method: "GET",
         headers: { "Content-type": "application/json" },
-      });
+      });*/
+      
       return end;
     }, endMin);
 
