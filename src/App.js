@@ -484,13 +484,6 @@ const App = () => {
           if (udDate === currDate) {
             if (currentTime >= mStartTime) {  //checking start time with current time
               if (currentTime <= mEndTime) { //checking end time with current time
-                
-                const auth_token = paramKeys.a_token;
-                const meetingTimingDetails = await fetch('https://www.gosee.expert/api/videocallrating/'+auth_token, {
-                  method: "GET",
-                  headers: { "Content-type": "application/json" },
-                });
-
                 const convUrlDate = `${udMonth}/${udDate}/${udYear}`;
                 const endMeet = endMeeting(convUrlDate, startTime, endTime, `${currentTime.getHours()}:${currentTime.getMinutes()}`);
                 

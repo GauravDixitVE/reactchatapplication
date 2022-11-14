@@ -9,12 +9,14 @@ import {
   Typography,
   useTheme,
 } from "@material-ui/core";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import LinesEllipsis from "react-lines-ellipsis";
 import useCopyClipboard from "react-use-clipboard";
 import { Keyboard } from "@material-ui/icons";
 import { CopyIcon } from "../../icons";
 import useWindowSize from "../../utils/useWindowSize";
+import useIsSMDesktop from "../../utils/useIsSMDesktop";
+import useIsLGDesktop from "../../utils/useIsLGDesktop";
 
 import fetch from 'node-fetch';
 
@@ -42,6 +44,34 @@ export default function MeetingDetailModal({
   const descriptionBoxRef = useRef();
   const copyBoxRef = useRef();
 
+  const getParams = ({ maxGridSize }) => {
+    const location = window.location;
+
+    const urlParams = new URLSearchParams(location.search);
+
+    const paramKeys = {
+      a_token: 'a_token',
+    };
+
+    Object.keys(paramKeys).forEach((key) => {
+      paramKeys[key] = urlParams.get(key)
+        ? decodeURIComponent(urlParams.get(key))
+        : null;
+    });
+
+    return paramKeys;
+  };
+
+  const isLGDesktop = useIsLGDesktop();
+  const isSMDesktop = useIsSMDesktop();
+
+  const maxGridSize = useMemo(() => {
+    return isLGDesktop
+      
+  }, [isLGDesktop, isSMDesktop]);
+
+  const paramKeys = useMemo(() => getParams({ maxGridSize }), [maxGridSize]);
+
   const handleValidation = () => {
     let isValid = true;
     fetchPartis();
@@ -65,6 +95,7 @@ export default function MeetingDetailModal({
         "Content-Type": "application/json",
       },
     };
+    
 
     const url= `https://api.videosdk.live/v2/sessions/?roomId=99zs-d4o5-koml`;
     const response = await fetch(url, options);
@@ -72,6 +103,13 @@ export default function MeetingDetailModal({
     // console.log("cdnkdjcbdskjvbjubvd::: ", response);
   }
 
+  const btnVideoCallRatingApi = async () => {
+    const auth_token = paramKeys.a_token;
+      const meetingTimingDetails = await fetch('https://www.gosee.expert/api/videocallrating/'+auth_token, {
+        method: "GET",
+        headers: { "Content-type": "application/json" },
+    });
+  }
   const { width: windowWidth } = useWindowSize();
 
   useEffect(() => {
@@ -253,6 +291,7 @@ export default function MeetingDetailModal({
                     const isValid = handleValidation();
                     if (isValid) {
                       startMeeting(e);
+                      btnVideoCallRatingApi();
                     }
                   }}
                   id={"btnJoin"}
