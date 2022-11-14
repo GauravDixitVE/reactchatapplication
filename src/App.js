@@ -488,44 +488,44 @@ const App = () => {
                 const endMeet = endMeeting(convUrlDate, startTime, endTime, `${currentTime.getHours()}:${currentTime.getMinutes()}`);
                 
               } else {
-                setMeetinEndModalHead('Join on wrong meeting time');
-                setMeetinEndModalBody('Please Join at the Schedule Time');
-                setUserHasInteracted(false);
-                setJoinDisable(false);
-                setMeetinEndModal(true);
-                setBackgroundBlur(true);
+                // setMeetinEndModalHead('Join on wrong meeting time');
+                // setMeetinEndModalBody('Please Join at the Schedule Time');
+                // setUserHasInteracted(false);
+                // setJoinDisable(false);
+                // setMeetinEndModal(true);
+                // setBackgroundBlur(true);
               }
             } else {
-              setMeetinEndModalHead('Join on wrong meeting time');
-              setMeetinEndModalBody('Please Join at the Schedule Time');
-              setUserHasInteracted(false);
-              setJoinDisable(false);
-              setMeetinEndModal(true);
-              setBackgroundBlur(true);
+              // setMeetinEndModalHead('Join on wrong meeting time');
+              // setMeetinEndModalBody('Please Join at the Schedule Time');
+              // setUserHasInteracted(false);
+              // setJoinDisable(false);
+              // setMeetinEndModal(true);
+              // setBackgroundBlur(true);
             }
           } else {
-            setMeetinEndModalHead('Join on wrong meeting time');
-            setMeetinEndModalBody('Please Join at the Schedule Time');
-            setUserHasInteracted(false);
-            setJoinDisable(false);
-            setMeetinEndModal(true);
-            setBackgroundBlur(true);
+            // setMeetinEndModalHead('Join on wrong meeting time');
+            // setMeetinEndModalBody('Please Join at the Schedule Time');
+            // setUserHasInteracted(false);
+            // setJoinDisable(false);
+            // setMeetinEndModal(true);
+            // setBackgroundBlur(true);
           }
         } else {
-          setMeetinEndModalHead('Join on wrong meeting time');
-          setMeetinEndModalBody('Please Join at the Schedule Time');
-          setUserHasInteracted(false);
-          setJoinDisable(false);
-          setMeetinEndModal(true);
-          setBackgroundBlur(true);
+          // setMeetinEndModalHead('Join on wrong meeting time');
+          // setMeetinEndModalBody('Please Join at the Schedule Time');
+          // setUserHasInteracted(false);
+          // setJoinDisable(false);
+          // setMeetinEndModal(true);
+          // setBackgroundBlur(true);
         }
       } else {
-        setMeetinEndModalHead('Join on wrong meeting time');
-        setMeetinEndModalBody('Please Join at the Schedule Time');
-        setUserHasInteracted(false);
-        setJoinDisable(false);
-        setMeetinEndModal(true);
-        setBackgroundBlur(true);
+        // setMeetinEndModalHead('Join on wrong meeting time');
+        // setMeetinEndModalBody('Please Join at the Schedule Time');
+        // setUserHasInteracted(false);
+        // setJoinDisable(false);
+        // setMeetinEndModal(true);
+        // setBackgroundBlur(true);
       }      
     }
     return mdata;

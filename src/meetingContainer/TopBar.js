@@ -1087,7 +1087,7 @@ const EndCallBTN = () => {
             : participantCanEndMeeting &&
               meetingMode === meetingModes.CONFERENCE
             ? handleClick(e)
-            : leaveVideoCallRating(); leave();
+            : leave();
         }}
       />
       {participantCanEndMeeting && (
