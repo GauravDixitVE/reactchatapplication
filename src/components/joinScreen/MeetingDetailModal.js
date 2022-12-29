@@ -51,6 +51,7 @@ export default function MeetingDetailModal({
 
     const paramKeys = {
       a_token: 'a_token',
+      user_id: 'user_id',
     };
 
     Object.keys(paramKeys).forEach((key) => {
@@ -105,9 +106,10 @@ export default function MeetingDetailModal({
 
   const btnVideoCallRatingApi = async () => {
     const auth_token = paramKeys.a_token;
-      const meetingTimingDetails = await fetch('https://www.gosee.expert/api/videocallrating/'+auth_token, {
-        method: "GET",
-        headers: { "Content-type": "application/json" },
+    const user_id = paramKeys.user_id;
+    const meetingTimingDetails = await fetch('https://www.gosee.expert/api/videocallrating/'+auth_token+'/'+user_id, {
+      method: "GET",
+      headers: { "Content-type": "application/json" },
     });
   }
   const { width: windowWidth } = useWindowSize();

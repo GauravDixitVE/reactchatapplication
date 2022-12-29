@@ -76,6 +76,7 @@ const App = () => {
     const paramKeys = {
       token: "token",
       a_token: 'a_token',
+      user_id: 'user_id',
       start_time : "start_time",
       end_time : "end_time",
       date : "date",
@@ -442,7 +443,9 @@ const App = () => {
   const getMeetingData = async () => {
 
     const auth_token = paramKeys.a_token;
-    // const meetingTimingDetails = await fetch('http://localhost:8080/get-token?u_token=123', {
+    const user_id = paramKeys.user_id;
+    alert(user_id);
+    // const meetingTimingDetails = await fetch('http://localhost:8080/get-token?u_token=123', { 
     const meetingTimingDetails = await fetch('https://www.gosee.expert/api/validdatetime/'+auth_token, {
       method: "GET",
       headers: { "Content-type": "application/json" },
