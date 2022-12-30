@@ -444,7 +444,7 @@ const App = () => {
 
     const auth_token = paramKeys.a_token;
     const user_id = paramKeys.user_id;
-    alert(user_id);
+    
     // const meetingTimingDetails = await fetch('http://localhost:8080/get-token?u_token=123', { 
     const meetingTimingDetails = await fetch('https://www.gosee.expert/api/validdatetime/'+auth_token, {
       method: "GET",
@@ -582,6 +582,29 @@ const App = () => {
     let path = `https://www.gosee.expert/`;
     window.location.href = path;
   }
+  
+  /*const rateCall = async (e) => {
+
+    // alert(paramKeys.user_id);
+    // alert(paramKeys.a_token);
+    let path = ` https://www.gosee.expert/api/videocallrating/`+paramKeys.a_token+'/'+paramKeys.a_token;
+
+    const rateCallStatus = await fetch(path, {
+      method: "GET",
+      headers: { "Content-type": "application/json" },
+    });
+
+    if (rateCallStatus) {
+      setMeetinEndModalHead('Rating');
+      setMeetinEndModalBody('Rating Submitted Successfully');
+      setUserHasInteracted(false);
+      setJoinDisable(false);
+      setMeetinEndModal(true);
+      setBackgroundBlur(true);
+    }
+    
+    // window.location.href = path;
+  }*/
 
   const closeTMeeting = () => {
     setMeetinTwoMinWorning(false);
@@ -675,7 +698,7 @@ const App = () => {
             {meetinEndModalBody}            
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Clck OK to exit
+            Click OK to exit
           </Typography>
           <Button 
             style={{
@@ -686,6 +709,16 @@ const App = () => {
             }}
             onClick={(e) => closeMeeting(e) }
           >OK</Button>
+          {/* <Button 
+            style={{
+              corsur: 
+              'pointer', 
+              marginLeft: '10px',
+              marginTop: '15px', 
+              backgroundColor: '#101019'
+            }}
+            onClick={(e) => rateCall(e) }
+          >Hit</Button> */}
         </Box>
       </Modal>
 
