@@ -239,7 +239,7 @@ export default function MeetingDetailModal({
         <div
           style={{
             fontFamily: "Roboto, sans-serif",
-            color: theme.palette.primary.contrastText,
+            color: theme.palette.primary.contrastText, 
           }}
         >
           <LinesEllipsis

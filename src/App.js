@@ -698,7 +698,7 @@ const App = () => {
             {meetinEndModalBody}            
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Click OK to exit
+            Click OK to exit!
           </Typography>
           <Button 
             style={{
