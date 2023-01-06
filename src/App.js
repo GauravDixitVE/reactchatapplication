@@ -587,7 +587,7 @@ const App = () => {
 
     // alert(paramKeys.user_id);
     // alert(paramKeys.a_token);
-    let path = ` https://www.gosee.expert/api/videocallrating/`+paramKeys.a_token+'/'+paramKeys.a_token;
+    let path = ` https://www.gosee.expert/api/videocallrating/`+paramKeys.a_token+'/'+paramKeys.user_id;
 
     const rateCallStatus = await fetch(path, {
       method: "GET",

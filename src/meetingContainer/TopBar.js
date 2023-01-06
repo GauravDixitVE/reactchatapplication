@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import {
+  Button,
   IconButton,
   Box,
   MenuItem,
@@ -11,6 +12,7 @@ import {
   Link,
   SwipeableDrawer,
   Grid,
+  Modal
 } from "@material-ui/core";
 import OutlineIconButton from "../components/OutlineIconButton";
 import { Constants, useMeeting, usePubSub } from "@videosdk.live/react-sdk";
@@ -24,6 +26,7 @@ import stoppingHLS from "../animations/hls_stop_blink.json";
 import SettingsOutlinedIcon from "@material-ui/icons/SettingsOutlined";
 import LiveIcon from "../icons/LiveIcon";
 import RaiseHand from "../icons/RaiseHand";
+import QAIcon from "../icons/QAIcon";
 import {
   Activities,
   Chat,
@@ -171,6 +174,7 @@ const ConfigBTN = ({ isMobile, isTab }) => {
     />
   );
 };
+
 const ChatBTN = ({ isMobile, isTab }) => {
   const { sideBarMode, setSideBarMode } = useMeetingAppContext();
 
@@ -457,7 +461,7 @@ const RecordingBTN = ({ isMobile, isTab }) => {
     const gridSize = gridSizeRef.current;
 
     const layout = { type, priority, gridSize };
-    console.log(recordingWebhookUrl,recordingAWSDirPath);
+    // console.log(recordingWebhookUrl,recordingAWSDirPath);
     startRecording(recordingWebhookUrl, recordingAWSDirPath, { layout });
   };
 
@@ -522,6 +526,69 @@ const RecordingBTN = ({ isMobile, isTab }) => {
     />
   );
 };
+
+const RateBTN = ({ onClick, isMobile, isTab }) => {
+
+  const location = window.location;
+  const urlParams = new URLSearchParams(location.search);
+  const [meetinTwoMinWorning, setMeetinTwoMinWorning] = useState(false);
+
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+    textAlign: 'center'
+  };
+
+  const paramKeys = {
+    a_token: 'a_token',
+    user_id: 'user_id'
+  };
+
+  Object.keys(paramKeys).forEach((key) => {
+    paramKeys[key] = urlParams.get(key)
+      ? decodeURIComponent(urlParams.get(key))
+      : null;
+  });
+
+  const rateCall = async (e) => {
+    
+    let path = ` https://www.gosee.expert/api/videocallrating/`+paramKeys.a_token+'/'+paramKeys.user_id;
+  
+    const rateCallStatus = await fetch(path, {
+      method: "GET",
+      headers: { "Content-type": "application/json" },
+    });
+    
+    if (rateCallStatus) {
+      alert("Your Rating Saved Successfully");
+      // setMeetinTwoMinWorning(true);
+    }
+  }
+
+  return(
+    <>
+      <Tooltip>
+        <Button 
+          style={{
+            corsur: 
+            'pointer', 
+            marginLeft: '10px',
+            marginTop: '15px', 
+            backgroundColor: '#101019'
+          }}
+          onClick={(e) => rateCall(e) }
+        >Rate</Button>
+      </Tooltip>
+    </>
+  );
+}
 const GoLiveBTN = ({ isMobile, isTab }) => {
   const mMeeting = useMeeting({});
 
@@ -1026,6 +1093,7 @@ const EndCallBTN = () => {
   
   const paramKeys = {
     a_token: 'a_token',
+    user_id: 'user_id'
   };
 
   
@@ -1039,10 +1107,10 @@ const EndCallBTN = () => {
   const leaveVideoCallRating = async () =>{
     const auth_token = paramKeys.a_token;
     console.log(auth_token);
-      const meetingTimingDetails = await fetch('https://www.gosee.expert/api/videocallrating/'+auth_token, {
-        method: "GET",
-        headers: { "Content-type": "application/json" },
-      });
+    const meetingTimingDetails = await fetch('https://www.gosee.expert/api/videocallrating/'+auth_token, {
+      method: "GET",
+      headers: { "Content-type": "application/json" },
+    });
   }
   const end = mMeeting?.end;
 
@@ -1219,8 +1287,33 @@ const EndCallBTN = () => {
 };
 
 const TopBar = ({ topBarHeight }) => {
+
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+
+  const [meetinEndModal, setMeetinEndModal] = useState(false);
+  const [meetinEndModalHead, setMeetinEndModalHead] = useState('');
+  const [meetinEndModalBody, setMeetinEndModalBody] = useState('');
+  const [meetinTwoMinWorning, setMeetinTwoMinWorning] = useState(false);
+  
+
+  const paramKeys = {
+    a_token: 'a_token',
+    user_id: 'user_id'
+  };
+
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+    textAlign: 'center'
+  };
 
   const [defaultBrandLogoUrl, setDefaultBrandLogoUrl] = useState(null);
 
@@ -1255,6 +1348,25 @@ const TopBar = ({ topBarHeight }) => {
     setOpen(false);
   };
 
+  const closeTMeeting = () => {
+    setMeetinTwoMinWorning(false);
+  }
+
+  const rateCall = async (e) => {
+
+    let path = ` https://www.gosee.expert/api/videocallrating/`+paramKeys.a_token+'/'+paramKeys.user_id;
+  
+    const rateCallStatus = await fetch(path, {
+      method: "GET",
+      headers: { "Content-type": "application/json" },
+    });
+  
+    if (rateCallStatus) {
+      alert("Your Rating Saved Successfully");
+      // setMeetinTwoMinWorning(true);
+    }
+  }
+
   const isMobile = useIsMobile();
   const isTab = useIsTab();
   const theme = useTheme();
@@ -1275,6 +1387,7 @@ const TopBar = ({ topBarHeight }) => {
       ADD_LIVE_STREAM: "ADD_LIVE_STREAM",
       CONFIGURATION: "CONFIGURATION",
       GO_LIVE: "GO_LIVE",
+      RATE: "RATE"
     }),
     []
   );
@@ -1373,6 +1486,12 @@ const TopBar = ({ topBarHeight }) => {
         });
       }
 
+      utilsArr.unshift(topBarButtonTypes.RATE);
+      mobileIconArr.unshift({
+        buttonType: topBarButtonTypes.RATE,
+        priority: 5,
+      });
+
       if (whiteboardEnabled && meetingMode === meetingModes.CONFERENCE) {
         utilsArr.unshift(topBarButtonTypes.WHITEBOARD);
         mobileIconArr.unshift({
@@ -1455,7 +1574,7 @@ const TopBar = ({ topBarHeight }) => {
       topBarButtonTypes,
       recordingEnabled,
       meetingMode,
-    ]);
+  ]);
 
   const [topBarVisible, setTopBarVisible] = useState(false);
 
@@ -1466,174 +1585,213 @@ const TopBar = ({ topBarHeight }) => {
   }, []);
 
   return isTab || isMobile ? (
-    <Box
-      style={{
-        height: topBarHeight,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: theme.palette.background.default,
-      }}
-    >
-      {firstFourElements.map((icon, i) => {
-        return (
-          <Box key={`topbar_controls_j_${i}`} ml={i === 0 ? 0 : 1.5}>
-            {icon.buttonType === topBarButtonTypes.RAISE_HAND ? (
-              <RaiseHandBTN />
-            ) : icon.buttonType === topBarButtonTypes.MIC ? (
-              <MicBTN />
-            ) : icon.buttonType === topBarButtonTypes.WEBCAM ? (
-              <WebcamBTN />
-            ) : icon.buttonType === topBarButtonTypes.SCREEN_SHARE ? (
-              <ScreenShareBTN />
-            // ) : icon.buttonType === topBarButtonTypes.PARTICIPANTS ? (
-            //   <ParticipantsBTN />
-            ) : icon.buttonType === topBarButtonTypes.CHAT ? (
-              <ChatBTN />
-            // ) : icon.buttonType === topBarButtonTypes.ACTIVITIES ? (
-            //   <ActivitiesBTN />
-            ) : icon.buttonType === topBarButtonTypes.END_CALL ? (
-              <EndCallBTN />
-            ) : icon.buttonType === topBarButtonTypes.RECORDING ? (
-              <RecordingBTN />
-            ) : icon.buttonType === topBarButtonTypes.HLS ? (
-              <HlsBTN />
-            ) : icon.buttonType === topBarButtonTypes.GO_LIVE ? (
-              <GoLiveBTN />
-            // ) : icon.buttonType === topBarButtonTypes.WHITEBOARD ? (
-            //   <WhiteBoardBTN />
-            ) : icon.buttonType === topBarButtonTypes.ADD_LIVE_STREAM ? (
-              <AddLiveStreamBTN />
-            ) : icon.buttonType === topBarButtonTypes.CONFIGURATION ? (
-              <ConfigBTN />
-            ) : null}
-          </Box>
-        );
-      })}
-
-      {excludeFirstFourElements.length >= 1 && (
-        <Box ml={2}>
-          <OutlineIconButton
-            Icon={MoreHorizIcon}
-            // Icon={Boolean(anchorEl) ? CloseIcon : MoreHorizIcon}
-            // isFocused={anchorEl}
-            onClick={handleClickFAB}
-          />
-        </Box>
-      )}
-
-      <SwipeableDrawer
-        anchor={"bottom"}
-        open={Boolean(open)}
-        onClose={handleCloseFAB}
-        onOpen={handleClickFAB}
-        style={{ paddingBottom: "100px" }}
+    <>
+      <Box
+        style={{
+          height: topBarHeight,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: theme.palette.background.default,
+        }}
       >
-        <Grid container>
-          {excludeFirstFourElements.map((icon, i) => {
-            return (
-              <Grid
-                item
-                xs={4}
-                sm={3}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                {icon.buttonType === topBarButtonTypes.RAISE_HAND ? (
-                  <RaiseHandBTN
-                    onClick={handleCloseFAB}
-                    isMobile={isMobile}
-                    isTab={isTab}
-                  />
-                ) : icon.buttonType === topBarButtonTypes.MIC ? (
-                  <MicBTN
-                    onClick={handleCloseFAB}
-                    isMobile={isMobile}
-                    isTab={isTab}
-                  />
-                ) : icon.buttonType === topBarButtonTypes.WEBCAM ? (
-                  <WebcamBTN
-                    onClick={handleCloseFAB}
-                    isMobile={isMobile}
-                    isTab={isTab}
-                  />
-                ) : icon.buttonType === topBarButtonTypes.SCREEN_SHARE ? (
-                  <ScreenShareBTN
-                    onClick={handleCloseFAB}
-                    isMobile={isMobile}
-                    isTab={isTab}
-                  />
-                // ) : icon.buttonType === topBarButtonTypes.PARTICIPANTS ? (
-                //   <ParticipantsBTN
-                //     onClick={handleCloseFAB}
-                //     isMobile={isMobile}
-                //     isTab={isTab}
-                //   />
-                ) : icon.buttonType === topBarButtonTypes.CHAT ? (
-                  <ChatBTN
-                    onClick={handleCloseFAB}
-                    isMobile={isMobile}
-                    isTab={isTab}
-                  />
-                // ) : icon.buttonType === topBarButtonTypes.ACTIVITIES ? (
-                //   <ActivitiesBTN
-                //     onClick={handleCloseFAB}
-                //     isMobile={isMobile}
-                //     isTab={isTab}
-                //   />
-                ) : icon.buttonType === topBarButtonTypes.END_CALL ? (
-                  <EndCallBTN
-                    onClick={handleCloseFAB}
-                    isMobile={isMobile}
-                    isTab={isTab}
-                  />
-                ) : icon.buttonType === topBarButtonTypes.RECORDING ? (
-                  <RecordingBTN
-                    onClick={handleCloseFAB}
-                    isMobile={isMobile}
-                    isTab={isTab}
-                  />
-                ) : icon.buttonType === topBarButtonTypes.HLS ? (
-                  <HlsBTN
-                    onClick={handleCloseFAB}
-                    isMobile={isMobile}
-                    isTab={isTab}
-                  />
-                ) : icon.buttonType === topBarButtonTypes.GO_LIVE ? (
-                  <GoLiveBTN
-                    onClick={handleCloseFAB}
-                    isMobile={isMobile}
-                    isTab={isTab}
-                  />
-                // ) : icon.buttonType === topBarButtonTypes.WHITEBOARD ? (
-                //   <WhiteBoardBTN
-                //     onClick={handleCloseFAB}
-                //     isMobile={isMobile}
-                //     isTab={isTab}
-                //   />
-                ) : icon.buttonType === topBarButtonTypes.ADD_LIVE_STREAM ? (
-                  <AddLiveStreamBTN
-                    onClick={handleCloseFAB}
-                    isMobile={isMobile}
-                    isTab={isTab}
-                  />
-                ) : icon.buttonType === topBarButtonTypes.CONFIGURATION ? (
-                  <ConfigBTN
-                    onClick={handleCloseFAB}
-                    isMobile={isMobile}
-                    isTab={isTab}
-                  />
-                ) : null}
-              </Grid>
-            );
-          })}
-        </Grid>
-      </SwipeableDrawer>
-    </Box>
+        {firstFourElements.map((icon, i) => {
+          return (
+            <Box key={`topbar_controls_j_${i}`} ml={i === 0 ? 0 : 1.5}>
+              {icon.buttonType === topBarButtonTypes.RAISE_HAND ? (
+                <RaiseHandBTN />
+              ) : icon.buttonType === topBarButtonTypes.MIC ? (
+                <MicBTN />
+              ) : icon.buttonType === topBarButtonTypes.WEBCAM ? (
+                <WebcamBTN />
+              ) : icon.buttonType === topBarButtonTypes.SCREEN_SHARE ? (
+                <ScreenShareBTN />
+              // ) : icon.buttonType === topBarButtonTypes.PARTICIPANTS ? (
+              //   <ParticipantsBTN />
+              ) : icon.buttonType === topBarButtonTypes.CHAT ? (
+                <ChatBTN />
+              // ) : icon.buttonType === topBarButtonTypes.ACTIVITIES ? (
+              //   <ActivitiesBTN />
+              ) : icon.buttonType === topBarButtonTypes.END_CALL ? (
+                <EndCallBTN />
+              ) : icon.buttonType === topBarButtonTypes.RECORDING ? (
+                <RecordingBTN />
+              ) : icon.buttonType === topBarButtonTypes.RATE ? (
+                <RateBTN />
+              ) : icon.buttonType === topBarButtonTypes.HLS ? (
+                <HlsBTN />
+              ) : icon.buttonType === topBarButtonTypes.GO_LIVE ? (
+                <GoLiveBTN />
+              // ) : icon.buttonType === topBarButtonTypes.WHITEBOARD ? (
+              //   <WhiteBoardBTN />
+              ) : icon.buttonType === topBarButtonTypes.ADD_LIVE_STREAM ? (
+                <AddLiveStreamBTN />
+              ) : icon.buttonType === topBarButtonTypes.CONFIGURATION ? (
+                <ConfigBTN />
+              ) : null}
+            </Box>
+          );
+        })}
+
+        {excludeFirstFourElements.length >= 1 && (
+          <Box ml={2}>
+            <OutlineIconButton
+              Icon={MoreHorizIcon}
+              // Icon={Boolean(anchorEl) ? CloseIcon : MoreHorizIcon}
+              // isFocused={anchorEl}
+              onClick={handleClickFAB}
+            />
+          </Box>
+        )}
+
+        <SwipeableDrawer
+          anchor={"bottom"}
+          open={Boolean(open)}
+          onClose={handleCloseFAB}
+          onOpen={handleClickFAB}
+          style={{ paddingBottom: "100px" }}
+        >
+          <Grid container>
+            {excludeFirstFourElements.map((icon, i) => {
+              return (
+                <Grid
+                  item
+                  xs={4}
+                  sm={3}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {icon.buttonType === topBarButtonTypes.RAISE_HAND ? (
+                    <RaiseHandBTN
+                      onClick={handleCloseFAB}
+                      isMobile={isMobile}
+                      isTab={isTab}
+                    />
+                  ) : icon.buttonType === topBarButtonTypes.MIC ? (
+                    <MicBTN
+                      onClick={handleCloseFAB}
+                      isMobile={isMobile}
+                      isTab={isTab}
+                    />
+                  ) : icon.buttonType === topBarButtonTypes.WEBCAM ? (
+                    <WebcamBTN
+                      onClick={handleCloseFAB}
+                      isMobile={isMobile}
+                      isTab={isTab}
+                    />
+                  ) : icon.buttonType === topBarButtonTypes.SCREEN_SHARE ? (
+                    <ScreenShareBTN
+                      onClick={handleCloseFAB}
+                      isMobile={isMobile}
+                      isTab={isTab}
+                    />
+                  // ) : icon.buttonType === topBarButtonTypes.PARTICIPANTS ? (
+                  //   <ParticipantsBTN
+                  //     onClick={handleCloseFAB}
+                  //     isMobile={isMobile}
+                  //     isTab={isTab}
+                  //   />
+                  ) : icon.buttonType === topBarButtonTypes.CHAT ? (
+                    <ChatBTN
+                      onClick={handleCloseFAB}
+                      isMobile={isMobile}
+                      isTab={isTab}
+                    />
+                  // ) : icon.buttonType === topBarButtonTypes.ACTIVITIES ? (
+                  //   <ActivitiesBTN
+                  //     onClick={handleCloseFAB}
+                  //     isMobile={isMobile}
+                  //     isTab={isTab}
+                  //   />
+                  ) : icon.buttonType === topBarButtonTypes.END_CALL ? (
+                    <EndCallBTN
+                      onClick={handleCloseFAB}
+                      isMobile={isMobile}
+                      isTab={isTab}
+                    />
+                  ) : icon.buttonType === topBarButtonTypes.RECORDING ? (
+                    <RecordingBTN
+                      onClick={handleCloseFAB}
+                      isMobile={isMobile}
+                      isTab={isTab}
+                    />
+                  ) : icon.buttonType === topBarButtonTypes.RATE ? (
+                    <RateBTN
+                      onClick={rateCall}
+                      isMobile={isMobile}
+                      isTab={isTab}
+                    />
+                  ) : icon.buttonType === topBarButtonTypes.HLS ? (
+                    <HlsBTN
+                      onClick={handleCloseFAB}
+                      isMobile={isMobile}
+                      isTab={isTab}
+                    />
+                  ) : icon.buttonType === topBarButtonTypes.GO_LIVE ? (
+                    <GoLiveBTN
+                      onClick={handleCloseFAB}
+                      isMobile={isMobile}
+                      isTab={isTab}
+                    />
+                  // ) : icon.buttonType === topBarButtonTypes.WHITEBOARD ? (
+                  //   <WhiteBoardBTN
+                  //     onClick={handleCloseFAB}
+                  //     isMobile={isMobile}
+                  //     isTab={isTab}
+                  //   />
+                  ) : icon.buttonType === topBarButtonTypes.ADD_LIVE_STREAM ? (
+                    <AddLiveStreamBTN
+                      onClick={handleCloseFAB}
+                      isMobile={isMobile}
+                      isTab={isTab}
+                    />
+                  ) : icon.buttonType === topBarButtonTypes.CONFIGURATION ? (
+                    <ConfigBTN
+                      onClick={handleCloseFAB}
+                      isMobile={isMobile}
+                      isTab={isTab}
+                    />
+                  ) : null}
+                </Grid>
+              );
+            })}
+          </Grid>
+        </SwipeableDrawer>
+      </Box>
+      {/* <Modal
+        open={meetinTwoMinWorning}
+        onClose={closeTMeeting}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Rating
+          </Typography>
+          <hr />
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Your Rating Saved Successfully
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Clck OK to close
+          </Typography>
+          <Button 
+            style={{
+              corsur: 
+              'pointer', 
+              marginTop: '15px', 
+              backgroundColor: '#101019'
+            }}
+            onClick={(e) => closeTMeeting(e) }
+          >OK</Button>
+        </Box>
+      </Modal> */}
+    </>
   ) : (
+    <>
     <Box
       style={{
         height: topBarHeight,
@@ -1765,6 +1923,8 @@ const TopBar = ({ topBarHeight }) => {
                         <EndCallBTN />
                       ) : buttonType === topBarButtonTypes.RECORDING ? (
                         <RecordingBTN />
+                      ) : buttonType === topBarButtonTypes.RATE ? (
+                        <RateBTN />
                       ) : buttonType === topBarButtonTypes.HLS ? (
                         <HlsBTN />
                       ) : buttonType === topBarButtonTypes.GO_LIVE ? (
@@ -1785,6 +1945,35 @@ const TopBar = ({ topBarHeight }) => {
         })}
       </Box>
     </Box>
+    {/* <Modal
+      open={meetinTwoMinWorning}
+      onClose={closeTMeeting}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <Box sx={style}>
+        <Typography id="modal-modal-title" variant="h6" component="h2">
+          Rating
+        </Typography>
+        <hr />
+        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          Your Rating Saved Successfully
+        </Typography>
+        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          Clck OK to close
+        </Typography>
+        <Button 
+          style={{
+            corsur: 
+            'pointer', 
+            marginTop: '15px', 
+            backgroundColor: '#101019'
+          }}
+          onClick={(e) => closeTMeeting(e) }
+        >OK</Button>
+      </Box>
+    </Modal> */}
+</>
   );
 };
 
