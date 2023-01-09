@@ -575,7 +575,8 @@ const RateBTN = ({ onClick, isMobile, isTab }) => {
 
   return(
     <>
-      <Tooltip>
+      <Tooltip title={"Invite Participant"}>
+      
         <Button 
           style={{
             corsur: 
