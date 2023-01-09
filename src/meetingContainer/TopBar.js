@@ -1364,7 +1364,7 @@ const TopBar = ({ topBarHeight }) => {
     });
   
     if (rateCallStatus) {
-      alert("Your Rating Saved Successfully");
+      alert("Video call invitation has been sent to your participant successfully!");
       // setMeetinTwoMinWorning(true);
     }
   }
