@@ -27,6 +27,7 @@ import SettingsOutlinedIcon from "@material-ui/icons/SettingsOutlined";
 import LiveIcon from "../icons/LiveIcon";
 import RaiseHand from "../icons/RaiseHand";
 import QAIcon from "../icons/QAIcon";
+import 'font-awesome/css/font-awesome.min.css';
 import {
   Activities,
   Chat,
@@ -559,7 +560,7 @@ const RateBTN = ({ onClick, isMobile, isTab }) => {
 
   const rateCall = async (e) => {
     
-    let path = ` https://www.gosee.expert/api/videocallrating/`+paramKeys.a_token+'/'+paramKeys.user_id;
+    let path = `https://www.gosee.expert/api/notifytoparticipant/`+paramKeys.a_token+'/'+paramKeys.user_id;
   
     const rateCallStatus = await fetch(path, {
       method: "GET",
@@ -580,11 +581,12 @@ const RateBTN = ({ onClick, isMobile, isTab }) => {
             corsur: 
             'pointer', 
             marginLeft: '10px',
-            marginTop: '15px', 
-            backgroundColor: '#101019'
+            padding: '9px',
+            background: 'rgb(33 32 50)',
+            border: '1px solid #4d4d5b',
           }}
           onClick={(e) => rateCall(e) }
-        >Rate</Button>
+        >Invite &nbsp; <i className="fa fa-user-plus"/></Button>
       </Tooltip>
     </>
   );
