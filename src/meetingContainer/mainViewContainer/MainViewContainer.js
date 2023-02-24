@@ -236,6 +236,7 @@ const MainViewContainer = ({
     let _pinnedParticipants = new Map(pinnedParticipants);
 
     let mainParticipants = [...mainViewParticipants];
+    console.log(mainParticipants.length)
 
     if (presenterId || whiteboardStarted) {
       const remainingParticipants = [...participants.keys()].filter(
@@ -364,8 +365,9 @@ const MainViewContainer = ({
       }
     }
 
-    let participantsCount = mainParticipants?.length;
+   
 
+    let participantsCount = mainParticipants?.length;
     if (participantsCount > layoutGridSize) {
       mainParticipants = mainParticipants.slice(0, layoutGridSize);
       const remainingMainParticipants = mainParticipants.splice(layoutGridSize);
