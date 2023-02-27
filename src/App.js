@@ -502,8 +502,8 @@ const App = () => {
       if (udYear === currYear) {        
         if (udMonth === currMonth) {
           if (udDate === currDate) {
-            if (currentTime >= mStartTime) {  //checking start time with current time
-              if (currentTime <= mEndTime) { //checking end time with current time
+            // if (currentTime >= mStartTime) {  //checking start time with current time
+              // if (currentTime <= mEndTime) { //checking end time with current time
                 const convUrlDate = `${udMonth}/${udDate}/${udYear}`;
 
                 const endMeet = endMeeting(convUrlDate, startTime, endTime, `${currentTime.getHours()}:${currentTime.getMinutes()}`);
@@ -519,22 +519,23 @@ const App = () => {
                   // }
                 
                 
-              } else {
-                setMeetinEndModalHead('Join on wrong meeting time');
-                setMeetinEndModalBody('Please Join at the Schedule Time');
-                setUserHasInteracted(false);
-                setJoinDisable(false);
-                setMeetinEndModal(true);
-                setBackgroundBlur(true);
-              }
-            } else {
-              setMeetinEndModalHead('Join on wrong meeting time');
-              setMeetinEndModalBody('Please Join at the Schedule Time');
-              setUserHasInteracted(false);
-              setJoinDisable(false);
-              setMeetinEndModal(true);
-              setBackgroundBlur(true);
-            }
+              // } 
+              // else {
+              //   setMeetinEndModalHead('Join on wrong meeting time');
+              //   setMeetinEndModalBody('Please Join at the Schedule Time');
+              //   setUserHasInteracted(false);
+              //   setJoinDisable(false);
+              //   setMeetinEndModal(true);
+              //   setBackgroundBlur(true);
+              // }
+            // } else {
+            //   setMeetinEndModalHead('Join on wrong meeting time');
+            //   setMeetinEndModalBody('Please Join at the Schedule Time');
+            //   setUserHasInteracted(false);
+            //   setJoinDisable(false);
+            //   setMeetinEndModal(true);
+            //   setBackgroundBlur(true);
+            // }
           } else {
             setMeetinEndModalHead('Join on wrong meeting time');
             setMeetinEndModalBody('Please Join at the Schedule Time');
