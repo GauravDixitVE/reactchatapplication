@@ -88,6 +88,7 @@ const App = () => {
       token: "token",
       a_token: 'a_token',
       user_id: 'user_id',
+      ptype: 'ptype',
       pname: 'pname',
       start_time : "start_time",
       end_time : "end_time",
@@ -460,6 +461,7 @@ const App = () => {
     const auth_token = paramKeys.a_token;
     const user_id = paramKeys.user_id;
     const pname = paramKeys.pname;
+    const ptype = paramKeys.ptype;
     
     // const meetingTimingDetails = await fetch('http://localhost:8080/get-token?u_token=123', { 
     const meetingTimingDetails = await fetch('https://www.gosee.expert/api/validdatetime/'+auth_token, {
@@ -506,7 +508,10 @@ const App = () => {
               // if (currentTime <= mEndTime) { //checking end time with current time
                 const convUrlDate = `${udMonth}/${udDate}/${udYear}`;
 
-                const endMeet = endMeeting(convUrlDate, startTime, endTime, `${currentTime.getHours()}:${currentTime.getMinutes()}`);
+                if(ptype>1){
+                  const endMeet = endMeeting(convUrlDate, startTime, endTime, `${currentTime.getHours()}:${currentTime.getMinutes()}`);
+                }
+                
                   // const getItemKey = localStorage.getItem('itemKey')
                   // if(getItemKey){
                   //   localStorage.setItem('itemKey',2)
@@ -585,10 +590,18 @@ const App = () => {
 
   const endMeeting = (date, sTime, eTime, currentTime) => {
     
-    const currentTimeDiff = new Date(date+" " + eTime) - new Date(date+" " + currentTime);
-    var meetingDuration = Math.floor((currentTimeDiff/60)/1000);
-    var endMin = (meetingDuration * 60) * 1000;
-    var twoMinEarly = (meetingDuration - 2) * (60 * 1000);
+    // const currentTimeDiff = new Date(date+" " + eTime) - new Date(date+" " + currentTime);
+    // var meetingDuration = Math.floor((currentTimeDiff/60)/1000);
+    // var endMin = (meetingDuration * 60) * 1000;
+    // var twoMinEarly = (meetingDuration - 2) * (60 * 1000);
+
+    // console.log('meetingDuration',meetingDuration)
+    // console.log('endMin',endMin)
+    // console.log('twoMinEarly',twoMinEarly)
+
+    var thirtyMinute = 30
+    var endMin = (thirtyMinute * 60) * 1000;
+    var twoMinEarly = (thirtyMinute - 2) * (60 * 1000);
 
     setTimeout(() => {
       setMeetinTwoMinWorning(true);
