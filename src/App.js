@@ -26,9 +26,6 @@ import useIsTab from "./utils/useIsTab";
 import { version as prebuiltSDKVersion } from "../package.json";
 import { meetingModes } from "./CONSTS";
 
-
-
-
 const style = {
   position: 'absolute',
   top: '50%',
@@ -42,7 +39,7 @@ const style = {
   textAlign: 'center'
 };
 const App = () => {  
-
+  
   // const {mainViewParticipants} = useMeetingAppContext();
 
   // let mainParticipants = [...mainViewParticipants];
@@ -50,6 +47,7 @@ const App = () => {
   // console.log('mainParticipants',mainParticipants)
   
   const[backgroundBlur,setBackgroundBlur] = useState(false);
+  
   // const pname = paramKeys.pname;
 
   if(backgroundBlur){
@@ -500,6 +498,8 @@ const App = () => {
       var e =  endTime.split(':');
       var mEndTime = new Date(currentTime.getFullYear(), currentTime.getMonth(),
       currentTime.getDate(),parseInt(e[0]), parseInt(e[1]));
+
+      
 
       if (udYear === currYear) {        
         if (udMonth === currMonth) {

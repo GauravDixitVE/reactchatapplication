@@ -61,7 +61,8 @@ import useIsLivestreaming from "./useIsLivestreaming";
 import useIsRecording from "./useIsRecording";
 import useIsHls from "./useIsHls";
 import { meetingModes } from "../CONSTS";
-
+import CountDownTimer from "../components/CountDownTimer";
+const hoursMinSec = {hours:0, minutes: 30, seconds: 0};
 const useStyles = makeStyles({
   row: { display: "flex", alignItems: "center" },
   borderRight: { borderRight: "1ps solid #ffffff33" },
@@ -549,7 +550,8 @@ const RateBTN = ({ onClick, isMobile, isTab }) => {
 
   const paramKeys = {
     a_token: 'a_token',
-    user_id: 'user_id'
+    user_id: 'user_id',
+    ptype: 'ptype'
   };
 
   Object.keys(paramKeys).forEach((key) => {
@@ -574,7 +576,8 @@ const RateBTN = ({ onClick, isMobile, isTab }) => {
   }
 
   return(
-    <>
+    <>  
+  
       <Tooltip title={"Invite Participant"}>
       
         <Button 
@@ -1096,10 +1099,11 @@ const EndCallBTN = () => {
   
   const paramKeys = {
     a_token: 'a_token',
-    user_id: 'user_id'
+    user_id: 'user_id',
+    ptype: 'ptype',
   };
 
-  
+  const [pType,setPtype] = useState("")
 
   Object.keys(paramKeys).forEach((key) => {
     paramKeys[key] = urlParams.get(key)
@@ -1130,6 +1134,10 @@ const EndCallBTN = () => {
   const handleClose = () => {
     setDownArrow(null);
   };
+
+  // useEffect(()=>{
+  //   setPtype(ptype)
+  // },[ptype])
 
   return (
     <Box
@@ -1302,9 +1310,19 @@ const TopBar = ({ topBarHeight }) => {
 
   const paramKeys = {
     a_token: 'a_token',
-    user_id: 'user_id'
+    user_id: 'user_id',
+    ptype: 'ptype'
   };
-
+  const location = window.location;
+  const urlParams = new URLSearchParams(location.search);
+  
+  Object.keys(paramKeys).forEach((key) => {
+    paramKeys[key] = urlParams.get(key)
+      ? decodeURIComponent(urlParams.get(key))
+      : null;
+  });
+  
+  
   const style = {
     position: 'absolute',
     top: '50%',
@@ -1390,7 +1408,8 @@ const TopBar = ({ topBarHeight }) => {
       ADD_LIVE_STREAM: "ADD_LIVE_STREAM",
       CONFIGURATION: "CONFIGURATION",
       GO_LIVE: "GO_LIVE",
-      RATE: "RATE"
+      RATE: "RATE",
+      COUNTDOWNTIMER : "COUNTDOWNTIMER"
     }),
     []
   );
@@ -1589,6 +1608,9 @@ const TopBar = ({ topBarHeight }) => {
 
   return isTab || isMobile ? (
     <>
+    <Box key='COUNT2222'>
+      {paramKeys.ptype>1?<CountDownTimer hoursMinSecs={hoursMinSec}/>:''}
+    </Box>
       <Box
         style={{
           height: topBarHeight,
@@ -1818,6 +1840,7 @@ const TopBar = ({ topBarHeight }) => {
           alignItems: "center",
         }}
       >
+        {paramKeys.ptype>1?<CountDownTimer hoursMinSecs={hoursMinSec}/>:''}
         {brandingEnabled && (
           <>
             <img
@@ -1845,6 +1868,7 @@ const TopBar = ({ topBarHeight }) => {
               }}
               ml={1}
             >
+              
               <Typography
                 style={{
                   fontSize: "1.2rem",
