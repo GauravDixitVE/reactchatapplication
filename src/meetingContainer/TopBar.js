@@ -1078,6 +1078,9 @@ const MicBTN = () => {
   );
 };
 const EndCallBTN = () => {
+  
+  localStorage.removeItem('clockParticipants')
+
   const mMeeting = useMeeting({});
   const classes = useStyles();
 
@@ -1600,6 +1603,8 @@ const TopBar = ({ topBarHeight }) => {
 
   const [topBarVisible, setTopBarVisible] = useState(false);
 
+  let clockParticipants = localStorage.getItem('clockParticipants');
+
   useEffect(() => {
     setTimeout(() => {
       setTopBarVisible(true);
@@ -1840,7 +1845,8 @@ const TopBar = ({ topBarHeight }) => {
           alignItems: "center",
         }}
       >
-        {paramKeys.ptype>1?<CountDownTimer hoursMinSecs={hoursMinSec}/>:''}
+
+        {clockParticipants>1?<CountDownTimer hoursMinSecs={hoursMinSec}/>:''}
         {brandingEnabled && (
           <>
             <img

@@ -216,6 +216,12 @@ const MainViewContainer = ({
     mode,
   } = useMeetingAppContext();
 
+  let participantsCount = [...mainViewParticipants];
+  
+  if(participantsCount.length>1){
+    localStorage.setItem('clockParticipants',2)
+  }
+
   const lastActiveParticipantId = useMemo(
     () => activeSortedParticipants[0]?.participantId,
     [activeSortedParticipants]
@@ -236,7 +242,11 @@ const MainViewContainer = ({
     let _pinnedParticipants = new Map(pinnedParticipants);
 
     let mainParticipants = [...mainViewParticipants];
-    console.log(mainParticipants.length)
+
+    // if(mainParticipants.length>1){
+    //   localStorage.setItem('clockParticipants',2)
+    //   console.log('111111',mainParticipants)
+    // }
 
     if (presenterId || whiteboardStarted) {
       const remainingParticipants = [...participants.keys()].filter(

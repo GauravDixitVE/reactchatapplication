@@ -612,6 +612,7 @@ const App = () => {
       setMeetinEndModalBody('Thanks for joining');
       setMeetinEndModal(true);
       setBackgroundBlur(true);
+      localStorage.removeItem('clockParticipants')
       
       return end;
     }, endMin);
