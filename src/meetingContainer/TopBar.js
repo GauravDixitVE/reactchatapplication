@@ -75,6 +75,8 @@ const useStyles = makeStyles({
   },
 });
 
+
+
 const RaiseHandBTN = ({ onClick, isMobile, isTab }) => {
   const { publish } = usePubSub("RAISE_HAND");
 
@@ -1079,7 +1081,7 @@ const MicBTN = () => {
 };
 const EndCallBTN = () => {
   
-  localStorage.removeItem('clockParticipants')
+  // localStorage.removeItem('clockParticipants')
 
   const mMeeting = useMeeting({});
   const classes = useStyles();
@@ -1309,6 +1311,7 @@ const TopBar = ({ topBarHeight }) => {
   const [meetinEndModalHead, setMeetinEndModalHead] = useState('');
   const [meetinEndModalBody, setMeetinEndModalBody] = useState('');
   const [meetinTwoMinWorning, setMeetinTwoMinWorning] = useState(false);
+  const [clockParticipantsValue,setClockParticipantsValue] = useState(false)
   
 
   const paramKeys = {
@@ -1603,7 +1606,7 @@ const TopBar = ({ topBarHeight }) => {
 
   const [topBarVisible, setTopBarVisible] = useState(false);
 
-  let clockParticipants = localStorage.getItem('clockParticipants');
+  // let clockParticipants = localStorage.getItem('clockParticipants');
 
   useEffect(() => {
     setTimeout(() => {
@@ -1611,11 +1614,12 @@ const TopBar = ({ topBarHeight }) => {
     }, 100);
   }, []);
 
+  const mMeeting = useMeeting();
+
+  const participants = mMeeting?.participants;
+  let participantsLength = participants.size
   return isTab || isMobile ? (
     <>
-    <Box key='COUNT2222'>
-      {paramKeys.ptype>1?<CountDownTimer hoursMinSecs={hoursMinSec}/>:''}
-    </Box>
       <Box
         style={{
           height: topBarHeight,
@@ -1846,7 +1850,7 @@ const TopBar = ({ topBarHeight }) => {
         }}
       >
 
-        {clockParticipants>1?<CountDownTimer hoursMinSecs={hoursMinSec}/>:''}
+        {participantsLength>1?<CountDownTimer hoursMinSecs={hoursMinSec}/>:''}
         {brandingEnabled && (
           <>
             <img
