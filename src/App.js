@@ -40,13 +40,14 @@ const style = {
 };
 const App = () => {  
   
-  // const {mainViewParticipants} = useMeetingAppContext();
+   //const {mainViewParticipants} = useMeetingAppContext();
 
-  // let mainParticipants = [...mainViewParticipants];
+   //let mainParticipants = [...mainViewParticipants];
 
-  // console.log('mainParticipants',mainParticipants)
+   //console.log('mainParticipants',mainViewParticipants)
   
   const[backgroundBlur,setBackgroundBlur] = useState(false);
+  const[participantsTotal,setParticipantsTotal] = useState(1);
   
   // const pname = paramKeys.pname;
 
@@ -68,6 +69,13 @@ const App = () => {
   });
 
   const [meetingLeft, setMeetingLeft] = useState(false);
+
+  useEffect(()=>{
+     if(participantsTotal && participantsTotal>1){
+          const endMeet = endMeeting();
+     }
+  },[participantsTotal])
+  
 
   const playNotificationErr = async () => {
     const errAudio = new Audio(
@@ -195,6 +203,7 @@ const App = () => {
     // required options
     let configErr;
 
+  
     /*if (typeof paramKeys.token !== "string") {
       configErr = `"token" not provided`;
       playNotificationErr();
@@ -508,9 +517,7 @@ const App = () => {
               // if (currentTime <= mEndTime) { //checking end time with current time
                 const convUrlDate = `${udMonth}/${udDate}/${udYear}`;
 
-                if(ptype>1){
-                  const endMeet = endMeeting(convUrlDate, startTime, endTime, `${currentTime.getHours()}:${currentTime.getMinutes()}`);
-                }
+              
                 
                   // const getItemKey = localStorage.getItem('itemKey')
                   // if(getItemKey){
@@ -588,8 +595,9 @@ const App = () => {
     };
   }, []);*/
 
-  const endMeeting = (date, sTime, eTime, currentTime) => {
-    
+  // const endMeeting = (date, sTime, eTime, currentTime) => {
+    const endMeeting = (date, sTime, eTime, currentTime) => {
+
     // const currentTimeDiff = new Date(date+" " + eTime) - new Date(date+" " + currentTime);
     // var meetingDuration = Math.floor((currentTimeDiff/60)/1000);
     // var endMin = (meetingDuration * 60) * 1000;
@@ -1111,7 +1119,7 @@ const App = () => {
                   : null,
             }}
           >
-            <MeetingContainer />
+            <MeetingContainer setParticipant={(data) => setParticipantsTotal(data)} />
           </MeetingProvider>
         </MeetingAppProvider>
         // <ClickAnywhereToContinue

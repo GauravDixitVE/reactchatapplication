@@ -62,7 +62,7 @@ import useIsRecording from "./useIsRecording";
 import useIsHls from "./useIsHls";
 import { meetingModes } from "../CONSTS";
 import CountDownTimer from "../components/CountDownTimer";
-const hoursMinSec = {hours:0, minutes: 30, seconds: 0};
+const hoursMinSec = {hours:0, minutes:30, seconds: 0};
 const useStyles = makeStyles({
   row: { display: "flex", alignItems: "center" },
   borderRight: { borderRight: "1ps solid #ffffff33" },
@@ -818,6 +818,7 @@ const HlsBTN = ({ isMobile, isTab }) => {
     isHlsRef.current = isHls;
   }, [isHls]);
 
+ 
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -1118,7 +1119,6 @@ const EndCallBTN = () => {
 
   const leaveVideoCallRating = async () =>{
     const auth_token = paramKeys.a_token;
-    console.log(auth_token);
     const meetingTimingDetails = await fetch('https://www.gosee.expert/api/videocallrating/'+auth_token, {
       method: "GET",
       headers: { "Content-type": "application/json" },
@@ -1302,7 +1302,7 @@ const EndCallBTN = () => {
   );
 };
 
-const TopBar = ({ topBarHeight }) => {
+const TopBar = ({ topBarHeight,props }) => {
 
   const classes = useStyles();
   const [open, setOpen] = useState(false);
@@ -1370,6 +1370,11 @@ const TopBar = ({ topBarHeight }) => {
   const handleClickFAB = () => {
     setOpen(true);
   };
+
+  const callParticipant=(data)=>{
+    console.log("text",data)
+    props.setParticipant(data)
+}
 
   const handleCloseFAB = () => {
     setOpen(false);
@@ -1614,6 +1619,7 @@ const TopBar = ({ topBarHeight }) => {
     }, 100);
   }, []);
 
+
   const mMeeting = useMeeting();
 
   const participants = mMeeting?.participants;
@@ -1850,7 +1856,7 @@ const TopBar = ({ topBarHeight }) => {
         }}
       >
 
-        {participantsLength>1?<CountDownTimer hoursMinSecs={hoursMinSec}/>:''}
+        {participantsLength>1?<CountDownTimer hoursMinSecs={hoursMinSec} participantsLength={()=>callParticipant(participantsLength)} />:''}
         {brandingEnabled && (
           <>
             <img

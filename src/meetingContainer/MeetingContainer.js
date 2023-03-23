@@ -85,7 +85,7 @@ const getPinMsg = ({
   }
 };
 
-const MeetingContainer = () => {
+const MeetingContainer = (props) => {
   const showJoinNotificationRef = useRef(false);
   const localParticipantAutoPinnedOnShare = useRef(false);
 
@@ -718,6 +718,7 @@ const MeetingContainer = () => {
 
   useEffect(() => {
     mMeetingRef.current = mMeeting;
+    props.setParticipant(mMeeting?.participants.size)
   }, [mMeeting]);
 
   useEffect(() => {
