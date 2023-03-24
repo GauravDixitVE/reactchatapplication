@@ -45,7 +45,7 @@ const App = () => {
    //let mainParticipants = [...mainViewParticipants];
 
    //console.log('mainParticipants',mainViewParticipants)
-  
+   
   const[backgroundBlur,setBackgroundBlur] = useState(false);
   const[participantsTotal,setParticipantsTotal] = useState(1);
   
@@ -72,7 +72,8 @@ const App = () => {
 
   useEffect(()=>{
      if(participantsTotal && participantsTotal>1){
-          const endMeet = endMeeting();
+          //const endMeet = endMeeting();
+          const endMeet = closeMeetingAfterTimerEnd();
      }
   },[participantsTotal])
   
@@ -625,6 +626,22 @@ const App = () => {
       return end;
     }, endMin);
 
+  }
+  
+  const closeMeetingAfterTimerEnd = async (e) => {
+    var thirtyMinute = 30
+    var endMin = (thirtyMinute * 60) * 1000;
+    var twoMinEarly = (thirtyMinute - 2) * (60 * 1000);
+
+    setTimeout(() => {
+      setMeetinTwoMinWorning(true);
+    }, twoMinEarly);
+    
+    setTimeout( async () => {
+      let path = `https://www.gosee.expert/`;
+      window.location.href = path;
+      localStorage.removeItem('clockParticipants')
+    }, endMin);
   }
 
   const closeMeeting = async (e) => {
