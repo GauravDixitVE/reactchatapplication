@@ -23,7 +23,6 @@ import { useMediaQuery } from "react-responsive";
 import WhiteboardContainer, {
   convertHWAspectRatio,
 } from "../../components/whiteboard/WhiteboardContainer";
-import CountDownTimer from "../../components/CountDownTimer";
 
 const MemoizedParticipant = React.memo(
   ParticipantViewer,

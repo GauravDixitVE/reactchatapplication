@@ -180,7 +180,7 @@ const MeetingContainer = (props) => {
   } = useMeetingAppContext();
 
   const topBarHeight = topbarEnabled ? 60 : 0;
-
+  const passPropsRefreshTime= {refreshTime:props.dataValue};
   const isTab = useIsTab();
   const isMobile = useIsMobile();
 
@@ -769,7 +769,7 @@ const MeetingContainer = (props) => {
                 flexDirection: isTab || isMobile ? "column-reverse" : "column",
               }}
             >
-              {topbarEnabled && <TopBar {...{ topBarHeight }} />}
+              {topbarEnabled && <TopBar  { ...{ topBarHeight,passPropsRefreshTime } }   />}
               <div
                 style={{
                   display: "flex",

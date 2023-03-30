@@ -1,10 +1,22 @@
 import { Button } from '@material-ui/core';
-import React from 'react'
+import React,{useEffect} from 'react'
 
-const CountDownTimer = ({hoursMinSecs}) => {
+const CountDownTimer = (props) => {
+    var hoursMinSecs=props.hoursMinSecs;
+    // if(hoursMinSecs.minutes<=0){
+    //     let path = `https://www.gosee.expert/`;
+    //     window.location.href = path;
+    // }
+    console.log("testig",hoursMinSecs);
     const { hours = 0, minutes = 0, seconds = 60 } = hoursMinSecs;
     const [[hrs, mins, secs], setTime] = React.useState([hours, minutes, seconds]);
     
+    useEffect(() => {
+        setTime([parseInt(0), parseInt(hoursMinSecs.minutes), parseInt(60)])
+        return () => {
+            setTime([parseInt(0), parseInt(0), parseInt(0)])
+        };
+    }, [hoursMinSecs]);
 
     const tick = () => {
    

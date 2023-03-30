@@ -71,8 +71,22 @@ const App = () => {
   const [meetingLeft, setMeetingLeft] = useState(false);
 
   useEffect(()=>{
-     if(participantsTotal && participantsTotal>1){
+    console.log("hello");
+    let checkClock=localStorage.getItem('clockTime');
+    // if(checkClock===0 && checkClock){
+    //     localStorage.removeItem('clockParticipants');
+    //      localStorage.removeItem('clockTime');
+    //      let path = `https://www.gosee.expert/`;
+    //      window.location.href = path;
+    //  }
+     if(participantsTotal && participantsTotal>1 && checkClock>0){
           //const endMeet = endMeeting();
+          // var newTime=new Date(); 
+          // var newTimeToSet=newTime.getHours() * 60 + newTime.getMinutes();
+          // var lastTimeSave=localStorage.getItem('lastTimeSave');
+          // var clockTime=lastTimeSave-newTimeToSet;
+          // localStorage.setItem('clockTime',clockTime);
+          getMeetingData();
           const endMeet = closeMeetingAfterTimerEnd();
      }
   },[participantsTotal])
@@ -117,8 +131,7 @@ const App = () => {
       participantCanLeave: "participantCanLeave",
       participantCanToggleOtherWebcam: "participantCanToggleOtherWebcam",
       participantCanToggleOtherMic: "participantCanToggleOtherMic",
-      partcipantCanToogleOtherScreenShare:
-        "partcipantCanToogleOtherScreenShare",
+      partcipantCanToogleOtherScreenShare:"partcipantCanToogleOtherScreenShare",
       participantCanToggleOtherMode: "participantCanToggleOtherMode",
       participantCanToggleLivestream: "participantCanToggleLivestream",
       participantCanEndMeeting: "participantCanEndMeeting",
@@ -487,7 +500,31 @@ const App = () => {
       var startTime = records.start_at;
       var endTime = records.end_at;
       var urlDate = records.call_date;
-    
+      if(records.call_start_time){
+              var oldTime=new Date(records.call_start_time*1000); 
+              
+              var newTime=new Date(); 
+              var newTimeToSet=newTime.getHours() * 60 + newTime.getMinutes();
+             
+             
+              var startTimeSave = oldTime.getHours() * 60 + oldTime.getMinutes(); 
+              var lastTimeSave = oldTime.getHours() * 60 + ((oldTime.getMinutes())+30);
+             // console.log("lastTimeSave time","="+lastTimeSave+" ,old start time ="+startTimeSave + ",newtimeslot=" + newTimeToSet)
+           
+              if(newTimeToSet <= lastTimeSave){
+                var clockTime=lastTimeSave-newTimeToSet;
+                localStorage.setItem('startTimeSave',startTimeSave)
+                localStorage.setItem('lastTimeSave',lastTimeSave)
+                localStorage.setItem('clockTime',clockTime)
+              }else{
+                localStorage.removeItem('startTimeSave');
+                localStorage.removeItem('lastTimeSave');
+                localStorage.removeItem('clockTime');
+              }
+      }else{
+        localStorage.removeItem('startTimeSave');
+        localStorage.removeItem('lastTimeSave');
+      }
       const ud = urlDate.split('/'); 
       const udDate = ud[0];
       const udMonth = ud[1];
@@ -629,7 +666,7 @@ const App = () => {
   }
   
   const closeMeetingAfterTimerEnd = async (e) => {
-    var thirtyMinute = 30
+    var thirtyMinute = localStorage.getItem('clockTime')-1;
     var endMin = (thirtyMinute * 60) * 1000;
     var twoMinEarly = (thirtyMinute - 2) * (60 * 1000);
 
@@ -1136,7 +1173,7 @@ const App = () => {
                   : null,
             }}
           >
-            <MeetingContainer setParticipant={(data) => setParticipantsTotal(data)} />
+            <MeetingContainer setParticipant={(data) => setParticipantsTotal(data)} dataValue={ localStorage.getItem('clockTime') }  />
           </MeetingProvider>
         </MeetingAppProvider>
         // <ClickAnywhereToContinue

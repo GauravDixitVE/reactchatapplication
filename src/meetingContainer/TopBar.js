@@ -62,7 +62,7 @@ import useIsRecording from "./useIsRecording";
 import useIsHls from "./useIsHls";
 import { meetingModes } from "../CONSTS";
 import CountDownTimer from "../components/CountDownTimer";
-const hoursMinSec = {hours:0, minutes:30, seconds: 0};
+
 const useStyles = makeStyles({
   row: { display: "flex", alignItems: "center" },
   borderRight: { borderRight: "1ps solid #ffffff33" },
@@ -1302,17 +1302,15 @@ const EndCallBTN = () => {
   );
 };
 
-const TopBar = ({ topBarHeight,props }) => {
-
+const TopBar = ({ topBarHeight,passPropsRefreshTime,props }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-
   const [meetinEndModal, setMeetinEndModal] = useState(false);
   const [meetinEndModalHead, setMeetinEndModalHead] = useState('');
   const [meetinEndModalBody, setMeetinEndModalBody] = useState('');
   const [meetinTwoMinWorning, setMeetinTwoMinWorning] = useState(false);
   const [clockParticipantsValue,setClockParticipantsValue] = useState(false)
-  
+  const [hoursMinSec,setHoursMinSec]=useState({hours:0, minutes: localStorage.getItem('clockTime') , seconds: 0});
 
   const paramKeys = {
     a_token: 'a_token',
@@ -1328,6 +1326,11 @@ const TopBar = ({ topBarHeight,props }) => {
       : null;
   });
   
+  useEffect(()=>{
+    localStorage.setItem('clockTime',passPropsRefreshTime.refreshTime);
+    setHoursMinSec({hours:0, minutes: passPropsRefreshTime.refreshTime , seconds: 0});
+    return() =>{  localStorage.removeItem('clockTime'); }
+  },[passPropsRefreshTime.refreshTime])
   
   const style = {
     position: 'absolute',
@@ -1383,7 +1386,7 @@ const TopBar = ({ topBarHeight,props }) => {
   const closeTMeeting = () => {
     setMeetinTwoMinWorning(false);
   }
-
+ 
   const rateCall = async (e) => {
 
     let path = ` https://www.gosee.expert/api/videocallrating/`+paramKeys.a_token+'/'+paramKeys.user_id;
@@ -1856,7 +1859,7 @@ const TopBar = ({ topBarHeight,props }) => {
         }}
       >
 
-        {participantsLength>1?<CountDownTimer hoursMinSecs={hoursMinSec} participantsLength={()=>callParticipant(participantsLength)} />:''}
+        {(participantsLength>1 && localStorage.getItem('clockTime')) ?<CountDownTimer hoursMinSecs={hoursMinSec} participantsLength={()=>callParticipant(participantsLength)} />:''}
         {brandingEnabled && (
           <>
             <img
