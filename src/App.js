@@ -71,21 +71,7 @@ const App = () => {
   const [meetingLeft, setMeetingLeft] = useState(false);
 
   useEffect(()=>{
-    console.log("hello");
-    let checkClock=localStorage.getItem('clockTime');
-    // if(checkClock===0 && checkClock){
-    //     localStorage.removeItem('clockParticipants');
-    //      localStorage.removeItem('clockTime');
-    //      let path = `https://www.gosee.expert/`;
-    //      window.location.href = path;
-    //  }
-     if(participantsTotal && participantsTotal>1 && checkClock>0){
-          //const endMeet = endMeeting();
-          // var newTime=new Date(); 
-          // var newTimeToSet=newTime.getHours() * 60 + newTime.getMinutes();
-          // var lastTimeSave=localStorage.getItem('lastTimeSave');
-          // var clockTime=lastTimeSave-newTimeToSet;
-          // localStorage.setItem('clockTime',clockTime);
+     if(participantsTotal && participantsTotal>1){
           getMeetingData();
           const endMeet = closeMeetingAfterTimerEnd();
      }
@@ -471,11 +457,41 @@ const App = () => {
   const [meetinEndModalHead, setMeetinEndModalHead] = useState('');
   const [meetinEndModalBody, setMeetinEndModalBody] = useState('');
   const [meetinTwoMinWorning, setMeetinTwoMinWorning] = useState(false);
+  const [clockTime,setClockTime]=useState(30);
   const mMeeting = useMeeting({});
   const end = mMeeting?.end;
 
   // const participants = mMeeting.participants;
   // console.log('participants',mMeeting)
+
+
+   var xmlHttp;
+  const srvTime=()=>{
+      try {
+          //FF, Opera, Safari, Chrome
+          xmlHttp = new XMLHttpRequest();
+      }
+      catch (err1) {
+          //IE
+          try {
+              xmlHttp = new window.ActiveXObject('Msxml2.XMLHTTP');
+          }
+          catch (err2) {
+              try {
+                  xmlHttp = new window.ActiveXObject('Microsoft.XMLHTTP');
+              }
+              catch (eerr3) {
+                  //AJAX not supported, use CPU time.
+                  alert("AJAX not supported");
+              }
+          }
+      }
+      xmlHttp.open('HEAD',window.location.href.toString(),false);
+      xmlHttp.setRequestHeader("Content-Type", "text/html");
+      xmlHttp.send('');
+      return xmlHttp.getResponseHeader("Date");
+  }
+   var servertime = srvTime();
 
   const getMeetingData = async () => {
 
@@ -502,24 +518,17 @@ const App = () => {
       var urlDate = records.call_date;
       if(records.call_start_time){
               var oldTime=new Date(records.call_start_time*1000); 
-              
-              var newTime=new Date(); 
+              var newTime=new Date(servertime); 
               var newTimeToSet=newTime.getHours() * 60 + newTime.getMinutes();
-             
-             
               var startTimeSave = oldTime.getHours() * 60 + oldTime.getMinutes(); 
               var lastTimeSave = oldTime.getHours() * 60 + ((oldTime.getMinutes())+30);
-             // console.log("lastTimeSave time","="+lastTimeSave+" ,old start time ="+startTimeSave + ",newtimeslot=" + newTimeToSet)
+             console.log("oldTime="+oldTime+",lastTimeSave time","="+lastTimeSave+" ,old start time ="+startTimeSave + ",newtimeslot=" + newTimeToSet)
            
               if(newTimeToSet <= lastTimeSave){
-                var clockTime=lastTimeSave-newTimeToSet;
+                var clockTimeData=lastTimeSave-newTimeToSet;
+                setClockTime(clockTimeData);
                 localStorage.setItem('startTimeSave',startTimeSave)
                 localStorage.setItem('lastTimeSave',lastTimeSave)
-                localStorage.setItem('clockTime',clockTime)
-              }else{
-                localStorage.removeItem('startTimeSave');
-                localStorage.removeItem('lastTimeSave');
-                localStorage.removeItem('clockTime');
               }
       }else{
         localStorage.removeItem('startTimeSave');
@@ -666,19 +675,23 @@ const App = () => {
   }
   
   const closeMeetingAfterTimerEnd = async (e) => {
-    var thirtyMinute = localStorage.getItem('clockTime')-1;
+    var thirtyMinute = clockTime;
+    console.log("thirtyMinute",thirtyMinute)
+    if(thirtyMinute){
+    console.log("notification time",thirtyMinute)
     var endMin = (thirtyMinute * 60) * 1000;
     var twoMinEarly = (thirtyMinute - 2) * (60 * 1000);
 
     setTimeout(() => {
       setMeetinTwoMinWorning(true);
     }, twoMinEarly);
-    
+    console.log("endmin",endMin);
     setTimeout( async () => {
       let path = `https://www.gosee.expert/`;
       window.location.href = path;
       localStorage.removeItem('clockParticipants')
     }, endMin);
+   }
   }
 
   const closeMeeting = async (e) => {
@@ -1010,7 +1023,7 @@ const App = () => {
                   : null,
             }}
           >
-            <MeetingContainer />
+            <MeetingContainer clockTime={ clockTime } />
           </MeetingProvider>
         </MeetingAppProvider>
       ) : 
@@ -1173,7 +1186,7 @@ const App = () => {
                   : null,
             }}
           >
-            <MeetingContainer setParticipant={(data) => setParticipantsTotal(data)} dataValue={ localStorage.getItem('clockTime') }  />
+            <MeetingContainer setParticipant={(data) => setParticipantsTotal(data)} clockTime={ clockTime }  />
           </MeetingProvider>
         </MeetingAppProvider>
         // <ClickAnywhereToContinue

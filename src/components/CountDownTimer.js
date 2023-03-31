@@ -8,11 +8,11 @@ const CountDownTimer = (props) => {
     //     window.location.href = path;
     // }
     console.log("testig",hoursMinSecs);
-    const { hours = 0, minutes = 0, seconds = 60 } = hoursMinSecs;
+    const { hours = 0, minutes = 0, seconds = 0 } = hoursMinSecs;
     const [[hrs, mins, secs], setTime] = React.useState([hours, minutes, seconds]);
     
     useEffect(() => {
-        setTime([parseInt(0), parseInt(hoursMinSecs.minutes), parseInt(60)])
+        setTime([parseInt(0), parseInt(hoursMinSecs.minutes), parseInt(0)])
         return () => {
             setTime([parseInt(0), parseInt(0), parseInt(0)])
         };

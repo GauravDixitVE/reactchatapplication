@@ -180,7 +180,7 @@ const MeetingContainer = (props) => {
   } = useMeetingAppContext();
 
   const topBarHeight = topbarEnabled ? 60 : 0;
-  const passPropsRefreshTime= {refreshTime:props.dataValue};
+  const passPropsRefreshTime= {refreshTime:props.clockTime};
   const isTab = useIsTab();
   const isMobile = useIsMobile();
 

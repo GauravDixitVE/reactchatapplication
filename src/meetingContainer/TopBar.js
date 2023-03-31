@@ -1310,8 +1310,8 @@ const TopBar = ({ topBarHeight,passPropsRefreshTime,props }) => {
   const [meetinEndModalBody, setMeetinEndModalBody] = useState('');
   const [meetinTwoMinWorning, setMeetinTwoMinWorning] = useState(false);
   const [clockParticipantsValue,setClockParticipantsValue] = useState(false)
-  const [hoursMinSec,setHoursMinSec]=useState({hours:0, minutes: localStorage.getItem('clockTime') , seconds: 0});
-
+  const [hoursMinSec,setHoursMinSec]=useState({hours:0, minutes: passPropsRefreshTime.refreshTime, seconds:0});
+ const [clockTime,setClockTime]=useState(passPropsRefreshTime.refreshTime);
   const paramKeys = {
     a_token: 'a_token',
     user_id: 'user_id',
@@ -1327,9 +1327,9 @@ const TopBar = ({ topBarHeight,passPropsRefreshTime,props }) => {
   });
   
   useEffect(()=>{
-    localStorage.setItem('clockTime',passPropsRefreshTime.refreshTime);
-    setHoursMinSec({hours:0, minutes: passPropsRefreshTime.refreshTime , seconds: 0});
-    return() =>{  localStorage.removeItem('clockTime'); }
+    setClockTime(passPropsRefreshTime.refreshTime)
+    setHoursMinSec({hours:0, minutes: passPropsRefreshTime.refreshTime , seconds:0});
+   // return() =>{  localStorage.removeItem('clockTime'); }
   },[passPropsRefreshTime.refreshTime])
   
   const style = {
@@ -1859,7 +1859,7 @@ const TopBar = ({ topBarHeight,passPropsRefreshTime,props }) => {
         }}
       >
 
-        {(participantsLength>1 && localStorage.getItem('clockTime')) ?<CountDownTimer hoursMinSecs={hoursMinSec} participantsLength={()=>callParticipant(participantsLength)} />:''}
+        {(participantsLength>1 && clockTime) ?<CountDownTimer hoursMinSecs={hoursMinSec} participantsLength={()=>callParticipant(participantsLength)} />:''}
         {brandingEnabled && (
           <>
             <img
