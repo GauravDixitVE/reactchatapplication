@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { clearInterval, clearTimeout, setInterval, setTimeout } from 'worker-timers';
 import MeetingContainer from "./meetingContainer/MeetingContainer";
 import { MeetingProvider,useMeeting } from "@videosdk.live/react-sdk";
 import {
