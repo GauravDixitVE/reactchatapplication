@@ -74,7 +74,7 @@ const App = () => {
   useEffect(()=>{
      if(participantsTotal && participantsTotal>1){
           getMeetingData();
-          const endMeet = closeMeetingAfterTimerEnd();
+        
      }
   },[participantsTotal])
   
@@ -529,7 +529,8 @@ const App = () => {
                 var clockTimeData=lastTimeSave-newTimeToSet;
                 setClockTime(clockTimeData);
                 localStorage.setItem('startTimeSave',startTimeSave)
-                localStorage.setItem('lastTimeSave',lastTimeSave)
+                localStorage.setItem('lastTimeSave',lastTimeSave);
+                const endMeet = closeMeetingAfterTimerEnd();
               }
       }else{
         localStorage.removeItem('startTimeSave');
