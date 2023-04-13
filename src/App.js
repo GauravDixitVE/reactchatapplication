@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { clearInterval, clearTimeout, setInterval, setTimeout } from 'worker-timers';
 import MeetingContainer from "./meetingContainer/MeetingContainer";
 import { MeetingProvider,useMeeting } from "@videosdk.live/react-sdk";
 import {
@@ -74,7 +73,7 @@ const App = () => {
   useEffect(()=>{
      if(participantsTotal && participantsTotal>1){
           getMeetingData();
-        
+          //const endMeet = closeMeetingAfterTimerEnd();
      }
   },[participantsTotal])
   
@@ -523,14 +522,13 @@ const App = () => {
               var newTimeToSet=newTime.getHours() * 60 + newTime.getMinutes();
               var startTimeSave = oldTime.getHours() * 60 + oldTime.getMinutes(); 
               var lastTimeSave = oldTime.getHours() * 60 + ((oldTime.getMinutes())+30);
-             console.log("oldTime="+oldTime+",lastTimeSave time","="+lastTimeSave+" ,old start time ="+startTimeSave + ",newtimeslot=" + newTimeToSet)
+             //console.log("oldTime="+oldTime+",lastTimeSave time","="+lastTimeSave+" ,old start time ="+startTimeSave + ",newtimeslot=" + newTimeToSet)
            
               if(newTimeToSet <= lastTimeSave){
                 var clockTimeData=lastTimeSave-newTimeToSet;
                 setClockTime(clockTimeData);
                 localStorage.setItem('startTimeSave',startTimeSave)
-                localStorage.setItem('lastTimeSave',lastTimeSave);
-                const endMeet = closeMeetingAfterTimerEnd();
+                localStorage.setItem('lastTimeSave',lastTimeSave)
               }
       }else{
         localStorage.removeItem('startTimeSave');
