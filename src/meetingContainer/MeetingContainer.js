@@ -539,9 +539,28 @@ const MeetingContainer = (props) => {
     }
   };
 
-  const _handleOnRecordingStarted = () => {};
+  const _handleOnRecordingStarted = () => {
+     //meetingId
+  };
 
-  const _handleOnRecordingStopped = () => {};
+  const callSaveRecording=async({token,meetingId})=>{
+    const BASE_URL = "https://api.videosdk.live";
+    const urlMeetingId = `${BASE_URL}/v2/recordings?roomId=${meetingId}`;
+    const resMeetingId = await fetch(urlMeetingId, {
+      method: "GET",
+      headers: { "Content-type": "application/json", Authorization: token }
+    });
+    console.log(resMeetingId.json());
+    return resMeetingId.json();
+  }
+
+  const _handleOnRecordingStopped = () => {
+    //meetingData.meeting_id,
+    const token=localStorage.getItem("set_token");
+    const meetingId=mMeetingRef.current.meetingId;
+    callSaveRecording({token,meetingId});
+    
+  };
 
   const _handleOnLiveStreamStarted = () => {};
 

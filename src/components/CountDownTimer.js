@@ -1,6 +1,7 @@
 import { Button, Box, CircularProgress, Typography, Modal } from '@material-ui/core';
 import React,{useEffect,useState} from 'react'
 import { clearInterval, clearTimeout, setInterval, setTimeout } from 'worker-timers';
+
 const style = {
     position: 'absolute',
     top: '50%',
@@ -20,7 +21,7 @@ const CountDownTimer = (props) => {
     //     let path = `https://www.gosee.expert/`;
     //     window.location.href = path;
     // }
-    //  console.log("testig",hoursMinSecs);
+     // console.log("testig",hoursMinSecs);
     const { hours, minutes, seconds } = hoursMinSecs;
     const [meetinTwoMinWorning, setMeetinTwoMinWorning] = useState(false);
     const [[hrs, mins, secs], setTime] = useState([hours, minutes, seconds]);
@@ -33,19 +34,28 @@ const CountDownTimer = (props) => {
     }, [hoursMinSecs]);
 
     useEffect(()=>{
-        console.log(mins)
-       if(mins === 2 && secs=== 0){ //
+       if(mins === 2 && secs === 0){ 
+        console.log("before 2 min");
            setMeetinTwoMinWorning(true);
         }
-        if(mins == 0 && secs === 1){
-             let path = `https://www.gosee.expert/`;
-             window.location.href = path;
-             localStorage.removeItem('clockParticipants')
+        if(mins === 0 && secs === 34){
+          setTimeout(() => {
+              endCall();
+          }, 33000);
         }
-        
+        return () =>{
+          localStorage.removeItem('setStartTime');
+          localStorage.removeItem('clockParticipants');
+      
+        }
+      
     },[hrs, mins, secs])
 
-
+    const endCall=()=>{
+       let path = `https://www.gosee.expert/`;
+       window.location.href = path;
+       localStorage.removeItem('clockParticipants')
+    }
     const tick = () => {
         if (hrs === 0 && mins === 0 && secs === 0) 
             reset()
@@ -87,10 +97,7 @@ const CountDownTimer = (props) => {
           </Typography>
           <hr />
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Only 2 minutes
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Clck OK to close
+            Only 2 minutes are remaining!
           </Typography>
           <Button 
             style={{

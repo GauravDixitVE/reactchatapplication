@@ -460,7 +460,7 @@ const App = () => {
   const [clockTime,setClockTime]=useState(30);
   const mMeeting = useMeeting({});
   const end = mMeeting?.end;
-
+ 
   // const participants = mMeeting.participants;
   // console.log('participants',mMeeting)
 
@@ -516,23 +516,21 @@ const App = () => {
       var startTime = records.start_at;
       var endTime = records.end_at;
       var urlDate = records.call_date;
+    //  console.log("records.call_start_time",records.call_start_time)
       if(records.call_start_time){
+           
               var oldTime=new Date(records.call_start_time*1000); 
               var newTime=new Date(servertime); 
               var newTimeToSet=newTime.getHours() * 60 + newTime.getMinutes();
               var startTimeSave = oldTime.getHours() * 60 + oldTime.getMinutes(); 
               var lastTimeSave = oldTime.getHours() * 60 + ((oldTime.getMinutes())+30);
-             //console.log("oldTime="+oldTime+",lastTimeSave time","="+lastTimeSave+" ,old start time ="+startTimeSave + ",newtimeslot=" + newTimeToSet)
+            // console.log("oldTime="+oldTime+",lastTimeSave time","="+lastTimeSave+" ,old start time ="+startTimeSave + ",newtimeslot=" + newTimeToSet)
            
               if(newTimeToSet <= lastTimeSave){
                 var clockTimeData=lastTimeSave-newTimeToSet;
                 setClockTime(clockTimeData);
-                localStorage.setItem('startTimeSave',startTimeSave)
-                localStorage.setItem('lastTimeSave',lastTimeSave)
+               
               }
-      }else{
-        localStorage.removeItem('startTimeSave');
-        localStorage.removeItem('lastTimeSave');
       }
       const ud = urlDate.split('/'); 
       const udDate = ud[0];
@@ -654,7 +652,7 @@ const App = () => {
     // console.log('endMin',endMin)
     // console.log('twoMinEarly',twoMinEarly)
 
-    var thirtyMinute = 30
+    var thirtyMinute = 30;
     var endMin = (thirtyMinute * 60) * 1000;
     var twoMinEarly = (thirtyMinute - 2) * (60 * 1000);
 
@@ -787,6 +785,7 @@ const App = () => {
   
   useEffect(() => {
     if (meetingData.meeting_id && meetingData.authorization_token) {
+      localStorage.setItem("set_token",meetingData.authorization_token)
       validateMeetingId({
         meetingId: meetingData.meeting_id,
         token: meetingData.authorization_token,
