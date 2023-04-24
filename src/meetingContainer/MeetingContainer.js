@@ -544,14 +544,17 @@ const MeetingContainer = (props) => {
   };
 
   const callSaveRecording=async({token,meetingId})=>{
-    const BASE_URL = "https://api.videosdk.live";
-    const urlMeetingId = `${BASE_URL}/v2/recordings?roomId=${meetingId}`;
+    const BASE_URL = "https://www.gosee.expert/api/videocallroominfo";
+    const urlMeetingId = `${BASE_URL}/?roomId=${token}&appointmentId=${meetingId}`;
     const resMeetingId = await fetch(urlMeetingId, {
       method: "GET",
-      headers: { "Content-type": "application/json", Authorization: token }
+      headers: { "Content-type": "application/json"}
     });
-    console.log(resMeetingId.json());
-    return resMeetingId.json();
+    const mdataResponce = await resMeetingId.json();
+    if(mdataResponce){
+      console.log(mdataResponce)
+      return true;
+    }
   }
 
   const _handleOnRecordingStopped = () => {
