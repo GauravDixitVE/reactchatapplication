@@ -1137,7 +1137,7 @@ const EndCallBTN = () => {
   };
 
   const handleClose = () => {
-    setDownArrow(null);
+    setDownArrow(null)
   };
 
   // useEffect(()=>{

@@ -509,7 +509,7 @@ const App = () => {
     const mdata = await meetingTimingDetails.json();
     // console.log('mdata',mdata)
     if(mdata.status){
-
+      localStorage.setItem("set_token",auth_token)
       setMeetingData(mdata.values);
       const records=mdata.values;
       
@@ -785,7 +785,6 @@ const App = () => {
   
   useEffect(() => {
     if (meetingData.meeting_id && meetingData.authorization_token) {
-      localStorage.setItem("set_token",meetingData.authorization_token)
       validateMeetingId({
         meetingId: meetingData.meeting_id,
         token: meetingData.authorization_token,

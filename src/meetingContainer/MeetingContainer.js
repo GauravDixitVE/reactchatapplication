@@ -543,25 +543,25 @@ const MeetingContainer = (props) => {
      //meetingId
   };
 
-  const callSaveRecording=async({token,meetingId})=>{
+  const callSaveRecording=async({appointmentId})=>{
     const BASE_URL = "https://www.gosee.expert/api/videocallroominfo";
-    const urlMeetingId = `${BASE_URL}/?roomId=${token}&appointmentId=${meetingId}`;
+    const urlMeetingId = `${BASE_URL}/?appointmentId=${appointmentId}`;
+    console.log("urlMeetingId",urlMeetingId);
     const resMeetingId = await fetch(urlMeetingId, {
       method: "GET",
       headers: { "Content-type": "application/json"}
     });
     const mdataResponce = await resMeetingId.json();
     if(mdataResponce){
-      console.log(mdataResponce)
       return true;
     }
   }
 
   const _handleOnRecordingStopped = () => {
     //meetingData.meeting_id,
-    const token=localStorage.getItem("set_token");
-    const meetingId=mMeetingRef.current.meetingId;
-    callSaveRecording({token,meetingId});
+    const appointmentId=localStorage.getItem("set_token");
+    //const meetingId=mMeetingRef.current.meetingId;
+    callSaveRecording({appointmentId});
     
   };
 
