@@ -52,7 +52,7 @@ const CountDownTimer = (props) => {
     },[hrs, mins, secs])
 
     const endCall=()=>{
-       let path = `https://www.gosee.expert/`;
+       let path = `https://www.gosee.expert/home/end-of-call`;
        window.location.href = path;
        localStorage.removeItem('clockParticipants')
     }

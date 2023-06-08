@@ -685,7 +685,8 @@ const App = () => {
     }, twoMinEarly);
     console.log("endmin",endMin);
     setTimeout( async () => {
-      let path = `https://www.gosee.expert/`;
+      //let path = `https://www.gosee.expert/`;
+      let path=`https://www.gosee.expert/home/end-of-call`;
       window.location.href = path;
       localStorage.removeItem('clockParticipants')
     }, endMin);
@@ -694,7 +695,7 @@ const App = () => {
 
   const closeMeeting = async (e) => {
     
-    let path = `https://www.gosee.expert/`;
+    let path = `https://www.gosee.expert/home/end-of-call`;
     window.location.href = path;
   }
   
