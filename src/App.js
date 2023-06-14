@@ -72,8 +72,15 @@ const App = () => {
 
   useEffect(()=>{
      if(participantsTotal && participantsTotal>1){
+          localStorage.setItem("set_start_meeting",1)
           getMeetingData();
           //const endMeet = closeMeetingAfterTimerEnd();
+     }
+     let startMeeting=localStorage.getItem("set_start_meeting")
+     if(participantsTotal===1 && startMeeting===1){
+       localStorage.removeItem('clockParticipants');
+       let path = `https://www.gosee.expert/home/end-of-call`;
+       window.location.href = path;
      }
   },[participantsTotal])
   
@@ -518,7 +525,6 @@ const App = () => {
       var urlDate = records.call_date;
     //  console.log("records.call_start_time",records.call_start_time)
       if(records.call_start_time){
-           
               var oldTime=new Date(records.call_start_time*1000); 
               var newTime=new Date(servertime); 
               var newTimeToSet=newTime.getHours() * 60 + newTime.getMinutes();
@@ -627,21 +633,13 @@ const App = () => {
   },[paramKeys]);
 
   useEffect( () => {
-    return () =>{ localStorage.removeItem('itemKey') }   
+    return () =>{
+       localStorage.removeItem('set_start_meeting');
+       localStorage.removeItem('itemKey');
+   }   
   },[]);
 
-  /*useEffect(() => {  
-    return async () => {  
-      const auth_token = paramKeys.a_token;
-      const meetingTimingDetails = await fetch('https://www.gosee.expert/api/videocallrating/'+auth_token, {
-        method: "GET",
-        headers: { "Content-type": "application/json" },
-      });  
-    };
-  }, []);*/
-
-  // const endMeeting = (date, sTime, eTime, currentTime) => {
-    const endMeeting = (date, sTime, eTime, currentTime) => {
+  const endMeeting = (date, sTime, eTime, currentTime) => {
 
     // const currentTimeDiff = new Date(date+" " + eTime) - new Date(date+" " + currentTime);
     // var meetingDuration = Math.floor((currentTimeDiff/60)/1000);

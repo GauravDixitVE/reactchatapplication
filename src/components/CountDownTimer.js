@@ -17,11 +17,6 @@ const style = {
 
 const CountDownTimer = (props) => {
     var hoursMinSecs=props.hoursMinSecs;
-    // if(hoursMinSecs.minutes<=0){
-    //     let path = `https://www.gosee.expert/`;
-    //     window.location.href = path;
-    // }
-     // console.log("testig",hoursMinSecs);
     const { hours, minutes, seconds } = hoursMinSecs;
     const [meetinTwoMinWorning, setMeetinTwoMinWorning] = useState(false);
     const [[hrs, mins, secs], setTime] = useState([hours, minutes, seconds]);
@@ -52,9 +47,11 @@ const CountDownTimer = (props) => {
     },[hrs, mins, secs])
 
     const endCall=()=>{
+       localStorage.removeItem('clockParticipants');
+       localStorage.removeItem('set_start_meeting');
        let path = `https://www.gosee.expert/home/end-of-call`;
        window.location.href = path;
-       localStorage.removeItem('clockParticipants')
+       
     }
     const tick = () => {
         if (hrs === 0 && mins === 0 && secs === 0) 
@@ -78,7 +75,6 @@ const CountDownTimer = (props) => {
     });
 
     const closeTMeeting = (e) => {
-        console.log("closePopup")
         setMeetinTwoMinWorning(false);
       }
 
