@@ -450,7 +450,7 @@ const ParticipantViewer = ({ participantId, quality, useVisibilitySensor }) => {
               playsinline // very very imp prop
               playIcon={<></>}
               //
-              pip={false}
+              pip={true}
               light={false}
               controls={false}
               muted={true}

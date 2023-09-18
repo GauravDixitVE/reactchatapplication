@@ -17,6 +17,7 @@ const OutlineIconButton = ({
   Icon,
   isFocused,
   bgColor,
+  PipIcon,
   focusBGColor,
   focusIconColor,
   disabled,
