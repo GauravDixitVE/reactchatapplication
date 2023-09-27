@@ -265,6 +265,7 @@ function PipBTN({ isMobile, isTab }) {
         pipVideo.srcObject.getTracks().forEach((track) => track.stop());
       });
 
+      
       //These will draw all the video elements in to the Canvas
       function drawCanvas() {
         //Getting all the video elements in the document
@@ -1223,6 +1224,10 @@ const EndCallBTN = () => {
     setDownArrow(null)
   };
 
+  //const pipWindowRef = useRef(null);
+  const pipModeLeave = async () => {
+      await document.exitPictureInPicture();
+  }
   // useEffect(()=>{
   //   setPtype(ptype)
   // },[ptype])
@@ -1254,7 +1259,8 @@ const EndCallBTN = () => {
             : participantCanEndMeeting &&
               meetingMode === meetingModes.CONFERENCE
             ? handleClick(e)
-            : leave();
+            : leave()
+            ? pipModeLeave() : pipModeLeave() ;
         }}
       />
       {participantCanEndMeeting && (
