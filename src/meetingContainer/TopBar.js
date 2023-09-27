@@ -307,8 +307,8 @@ function PipBTN({ isMobile, isTab }) {
   return isMobile || isTab ? (
     <MobileIconButton
       id="pip-btn"
-      tooltipTitle={pipMode ? "Stop PiP" : "Start Pip"}
-      buttonText={pipMode ? "Stop PiP" : "Start Pip"}
+      tooltipTitle={pipMode ? "Stop PiP" : "Start PiP"}
+      buttonText={pipMode ? "Stop PiP" : "Start PiP"}
       isFocused={pipMode}
       Icon={PictureInPicture}
       onClick={() => {
@@ -323,7 +323,7 @@ function PipBTN({ isMobile, isTab }) {
         togglePipMode();
       }}
       isFocused={pipMode}
-      tooltipTitle={pipMode ? "Stop PiP" : "Start Pip"}
+      tooltipTitle={pipMode ? "Stop PiP" : "Start PiP"}
       disabled={false}
     />
   );
