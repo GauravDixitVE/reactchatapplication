@@ -176,9 +176,9 @@ const PresenterView = ({ presenterId }) => {
             //
             height={"100%"}
             width={"100%"}
-            style={{
-              filter: isLocal ? "blur(1rem)" : undefined,
-            }}
+            // style={{
+            //   filter: isLocal ? "blur(1rem)" : undefined,
+            // }}
             onError={(err) => {
               console.log(err, "presenter video error");
             }}
