@@ -184,7 +184,7 @@ const PresenterView = ({ presenterId }) => {
             }}
           />
         </>
-        {isLocal && (
+        {/* {isLocal && (
           <Box
             p={5}
             style={{
@@ -235,7 +235,7 @@ const PresenterView = ({ presenterId }) => {
               </Button>
             </Box>
           </Box>
-        )}
+        )} */}
       </div>
       <CornerDisplayName
         {...{
