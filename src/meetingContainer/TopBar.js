@@ -210,125 +210,125 @@ const ChatBTN = ({ isMobile, isTab }) => {
 };
 
 
-function PipBTN({ isMobile, isTab }) {
-  const { pipMode, setPipMode } = useMeetingAppContext();
+// function PipBTN({ isMobile, isTab }) {
+//   const { pipMode, setPipMode } = useMeetingAppContext();
 
-  const getRowCount = (length) => {
-    return length > 2 ? 2 : length > 0 ? 1 : 0;
-  };
-  const getColCount = (length) => {
-    return length < 2 ? 1 : length < 5 ? 2 : 3;
-  };
+//   const getRowCount = (length) => {
+//     return length > 2 ? 2 : length > 0 ? 1 : 0;
+//   };
+//   const getColCount = (length) => {
+//     return length < 2 ? 1 : length < 5 ? 2 : 3;
+//   };
 
-  const pipWindowRef = useRef(null);
-  const togglePipMode = async () => {
-    //Check if PIP Window is active or not
-    //If active we will turn it off
-    if (pipWindowRef.current) {
-      await document.exitPictureInPicture();
-      pipWindowRef.current = null;
-      return;
-    }
+//   const pipWindowRef = useRef(null);
+//   const togglePipMode = async () => {
+//     //Check if PIP Window is active or not
+//     //If active we will turn it off
+//     if (pipWindowRef.current) {
+//       await document.exitPictureInPicture();
+//       pipWindowRef.current = null;
+//       return;
+//     }
 
-    //Check if browser supports PIP mode else show a message to user
-    if ("pictureInPictureEnabled" in document) {
-      //Creating a Canvas which will render our PIP Stream
-      const source = document.createElement("canvas");
-      const ctx = source.getContext("2d");
+//     //Check if browser supports PIP mode else show a message to user
+//     if ("pictureInPictureEnabled" in document) {
+//       //Creating a Canvas which will render our PIP Stream
+//       const source = document.createElement("canvas");
+//       const ctx = source.getContext("2d");
 
-      //Create a Video tag which we will popout for PIP
-      const pipVideo = document.createElement("video");
-      pipWindowRef.current = pipVideo;
-      pipVideo.autoplay = true;
+//       //Create a Video tag which we will popout for PIP
+//       const pipVideo = document.createElement("video");
+//       pipWindowRef.current = pipVideo;
+//       pipVideo.autoplay = true;
 
-      //Creating stream from canvas which we will play
-      const stream = source.captureStream();
-      pipVideo.srcObject = stream;
-      drawCanvas();
+//       //Creating stream from canvas which we will play
+//       const stream = source.captureStream();
+//       pipVideo.srcObject = stream;
+//       drawCanvas();
 
-      //When Video is ready we will start PIP mode
-      pipVideo.onloadedmetadata = () => {
-        pipVideo.requestPictureInPicture();
-      };
-      await pipVideo.play();
+//       //When Video is ready we will start PIP mode
+//       pipVideo.onloadedmetadata = () => {
+//         pipVideo.requestPictureInPicture();
+//       };
+//       await pipVideo.play();
 
-      //When the PIP mode starts, we will start drawing canvas with PIP view
-      pipVideo.addEventListener("enterpictureinpicture", (event) => {
-        drawCanvas();
-        setPipMode(true);
-      });
+//       //When the PIP mode starts, we will start drawing canvas with PIP view
+//       pipVideo.addEventListener("enterpictureinpicture", (event) => {
+//         drawCanvas();
+//         setPipMode(true);
+//       });
 
-      //When PIP mode exits, we will dispose the track we created earlier
-      pipVideo.addEventListener("leavepictureinpicture", (event) => {
-        pipWindowRef.current = null;
-        setPipMode(false);
-        pipVideo.srcObject.getTracks().forEach((track) => track.stop());
-      });
+//       //When PIP mode exits, we will dispose the track we created earlier
+//       pipVideo.addEventListener("leavepictureinpicture", (event) => {
+//         pipWindowRef.current = null;
+//         setPipMode(false);
+//         pipVideo.srcObject.getTracks().forEach((track) => track.stop());
+//       });
 
       
-      //These will draw all the video elements in to the Canvas
-      function drawCanvas() {
-        //Getting all the video elements in the document
-        const videos = document.querySelectorAll("video");
-        try {
-          //Perform initial black paint on the canvas
-          ctx.fillStyle = "black";
-          ctx.fillRect(0, 0, source.width, source.height);
+//       //These will draw all the video elements in to the Canvas
+//       function drawCanvas() {
+//         //Getting all the video elements in the document
+//         const videos = document.querySelectorAll("video");
+//         try {
+//           //Perform initial black paint on the canvas
+//           ctx.fillStyle = "black";
+//           ctx.fillRect(0, 0, source.width, source.height);
 
-          //Drawing the participant videos on the canvas in the grid format
-          const rows = getRowCount(videos.length);
-          const columns = getColCount(videos.length);
-          for (let i = 0; i < rows; i++) {
-            for (let j = 0; j < columns; j++) {
-              if (j + i * columns <= videos.length || videos.length == 1) {
-                ctx.drawImage(
-                  videos[j + i * columns],
-                  j < 1 ? 0 : source.width / (columns / j),
-                  i < 1 ? 0 : source.height / (rows / i),
-                  source.width / columns,
-                  source.height / rows
-                );
-              }
-            }
-          }
-        } catch (error) {
-          console.log(error);
-        }
+//           //Drawing the participant videos on the canvas in the grid format
+//           const rows = getRowCount(videos.length);
+//           const columns = getColCount(videos.length);
+//           for (let i = 0; i < rows; i++) {
+//             for (let j = 0; j < columns; j++) {
+//               if (j + i * columns <= videos.length || videos.length == 1) {
+//                 ctx.drawImage(
+//                   videos[j + i * columns],
+//                   j < 1 ? 0 : source.width / (columns / j),
+//                   i < 1 ? 0 : source.height / (rows / i),
+//                   source.width / columns,
+//                   source.height / rows
+//                 );
+//               }
+//             }
+//           }
+//         } catch (error) {
+//           console.log(error);
+//         }
 
-        //If pip mode is on, keep drawing the canvas when ever new frame is requested
-        if (document.pictureInPictureElement === pipVideo) {
-          requestAnimationFrame(drawCanvas);
-        }
-      }
-    } else {
-      alert("PIP is not supported by your browser");
-    }
-  };
+//         //If pip mode is on, keep drawing the canvas when ever new frame is requested
+//         if (document.pictureInPictureElement === pipVideo) {
+//           requestAnimationFrame(drawCanvas);
+//         }
+//       }
+//     } else {
+//       alert("PIP is not supported by your browser");
+//     }
+//   };
 
-  return isMobile || isTab ? (
-    <MobileIconButton
-      id="pip-btn"
-      tooltipTitle={pipMode ? "Stop PiP" : "Start PiP"}
-      buttonText={pipMode ? "Stop PiP" : "Start PiP"}
-      isFocused={pipMode}
-      Icon={PictureInPicture}
-      onClick={() => {
-        togglePipMode();
-      }}
-      disabled={false}
-    />
-  ) : (
-    <OutlineIconButton
-      Icon={PictureInPicture}
-      onClick={() => {
-        togglePipMode();
-      }}
-      isFocused={pipMode}
-      tooltipTitle={pipMode ? "Stop PiP" : "Start PiP"}
-      disabled={false}
-    />
-  );
-}
+//   return isMobile || isTab ? (
+//     <MobileIconButton
+//       id="pip-btn"
+//       tooltipTitle={pipMode ? "Stop PiP" : "Start PiP"}
+//       buttonText={pipMode ? "Stop PiP" : "Start PiP"}
+//       isFocused={pipMode}
+//       Icon={PictureInPicture}
+//       onClick={() => {
+//         togglePipMode();
+//       }}
+//       disabled={false}
+//     />
+//   ) : (
+//     <OutlineIconButton
+//       Icon={PictureInPicture}
+//       onClick={() => {
+//         togglePipMode();
+//       }}
+//       isFocused={pipMode}
+//       tooltipTitle={pipMode ? "Stop PiP" : "Start PiP"}
+//       disabled={false}
+//     />
+//   );
+// }
 
 /*const WhiteBoardBTN = ({ onClick, isMobile, isTab }) => {
   const { whiteboardStarted, whiteboardEnabled, canToggleWhiteboard } =
@@ -1750,8 +1750,6 @@ const TopBar = ({ topBarHeight,passPropsRefreshTime,props }) => {
               //   <ParticipantsBTN />
               ) : icon.buttonType === topBarButtonTypes.CHAT ? (
                 <ChatBTN />
-                ): icon.buttonType === topBarButtonTypes.PIP ? (
-                  <PipBTN />
                ) : icon.buttonType === topBarButtonTypes.END_CALL ? (
                 <EndCallBTN />
               ) : icon.buttonType === topBarButtonTypes.RECORDING ? (
@@ -1840,12 +1838,6 @@ const TopBar = ({ topBarHeight,passPropsRefreshTime,props }) => {
                       isMobile={isMobile}
                       isTab={isTab}
                     />
-                    )
-                  : icon.buttonType === topBarButtonTypes.PIP ? (
-                      <PipBTN
-                        isMobile={isMobile}
-                        isTab={isTab}
-                       />
                   // ) : icon.buttonType === topBarButtonTypes.ACTIVITIES ? (
                   //   <ActivitiesBTN
                   //     onClick={handleCloseFAB}
@@ -2064,9 +2056,6 @@ const TopBar = ({ topBarHeight,passPropsRefreshTime,props }) => {
                         <ScreenShareBTN />
                       // ) : buttonType === topBarButtonTypes.PARTICIPANTS ? (
                       //   <ParticipantsBTN />
-                      )
-                      : buttonType === topBarButtonTypes.PIP ? (
-                        <PipBTN />
                       )
                       : buttonType === topBarButtonTypes.CHAT ? ( 
                           <ChatBTN />
