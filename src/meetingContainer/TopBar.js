@@ -324,7 +324,7 @@ function PipBTN({ isMobile, isTab }) {
         togglePipMode();
       }}
       isFocused={pipMode}
-      tooltipTitle={pipMode ? "Stop PiP" : "Start PiP"}
+      tooltipTitle={pipMode ? "STOP PRESENTATION MODE" : "START PRESENTATION MODE"}
       disabled={false}
     />
   );
@@ -1404,7 +1404,8 @@ const TopBar = ({ topBarHeight,passPropsRefreshTime,props }) => {
   const paramKeys = {
     a_token: 'a_token',
     user_id: 'user_id',
-    ptype: 'ptype'
+    ptype: 'ptype',
+    iscaller:'iscaller'
   };
   const location = window.location;
   const urlParams = new URLSearchParams(location.search);
@@ -1414,7 +1415,6 @@ const TopBar = ({ topBarHeight,passPropsRefreshTime,props }) => {
       ? decodeURIComponent(urlParams.get(key))
       : null;
   });
-  
   useEffect(()=>{
     setClockTime(passPropsRefreshTime.refreshTime)
     setHoursMinSec({hours:0, minutes: passPropsRefreshTime.refreshTime , seconds:0});
@@ -1748,7 +1748,7 @@ const TopBar = ({ topBarHeight,passPropsRefreshTime,props }) => {
                 <ScreenShareBTN />)
               // ) : icon.buttonType === topBarButtonTypes.PARTICIPANTS ? (
               //   <ParticipantsBTN />
-              : icon.buttonType === topBarButtonTypes.PIP ? (
+              : icon.buttonType === topBarButtonTypes.PIP && paramKeys['iscaller']==='true' ? (
                 <PipBTN />
               ) : icon.buttonType === topBarButtonTypes.CHAT ? (
                 <ChatBTN />
@@ -1841,7 +1841,7 @@ const TopBar = ({ topBarHeight,passPropsRefreshTime,props }) => {
                       isTab={isTab}
                     />
                     )
-                    : icon.buttonType === topBarButtonTypes.PIP ? (
+                    : icon.buttonType === topBarButtonTypes.PIP && paramKeys['iscaller']==='true' ? (
                         <PipBTN
                           isMobile={isMobile}
                           isTab={isTab}
@@ -2065,7 +2065,7 @@ const TopBar = ({ topBarHeight,passPropsRefreshTime,props }) => {
                       //   <ActivitiesBTN />
                       ) : buttonType === topBarButtonTypes.END_CALL ? (
                         <EndCallBTN />
-                      ) : buttonType === topBarButtonTypes.PIP ? (
+                      ) : buttonType === topBarButtonTypes.PIP && paramKeys['iscaller']==='true' ? (
                         <PipBTN />
                       ) : buttonType === topBarButtonTypes.RECORDING ? (
                         <RecordingBTN />
