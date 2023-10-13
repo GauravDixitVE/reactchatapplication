@@ -134,6 +134,7 @@ export const MeetingAppProvider = ({
 
   const classes = useStyles();
   const [sideBarMode, setSideBarMode] = useState(null);
+  const [pipMode, setPipMode] = useState(null);
   const [sideBarNestedMode, setSideBarNestedMode] = useState(null);
   const [activeSortedParticipants, setActiveSortedParticipants] = useState([]);
   const [mainViewParticipants, setMainViewParticipants] = useState([]);
@@ -283,6 +284,7 @@ export const MeetingAppProvider = ({
 
         // states
         sideBarMode,
+        pipMode,
         activeSortedParticipants,
         mainViewParticipants,
         overlaidInfoVisible,
@@ -309,6 +311,7 @@ export const MeetingAppProvider = ({
 
         // setters
         setSideBarMode,
+        setPipMode,
         setActiveSortedParticipants,
         setMainViewParticipants,
         setOverlaidInfoVisible,
